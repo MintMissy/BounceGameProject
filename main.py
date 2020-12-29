@@ -1,6 +1,24 @@
-def printMethod(message, quantity):
-    for i in range(quantity):
-        print("[" + str(i) + "] " + message)
+import pygame
 
+import ScreenProperties
 
-printMethod("Hey! What's up!", 5)
+pygame.init()
+
+# Initiation of the window
+pygame.display.set_caption("The name of window")
+# TODO Setting an icon of program
+# pygame.display.set_icon()
+# Import screen properties class from file
+screenProperties = ScreenProperties.ScreenProperties()
+# Set screen size
+screen = pygame.display.set_mode((screenProperties.getWidth(), screenProperties.getHeight()))
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit(0)
+
+    screen.fill((screenProperties.getColor()))
+
+    pygame.display.flip()
