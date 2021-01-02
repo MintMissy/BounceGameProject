@@ -1,25 +1,17 @@
 class ScreenProperties:
     width = 800
     height = 600
-    centerX = width / 2
-    centerY = height / 2
 
     colorR = 218
     colorG = 245
     colorB = 244
     screenColor = (colorR, colorG, colorB)
 
-    def getWidth(self):
-        return self.width
-
-    def getHeight(self):
-        return self.height
-
     def getCenterX(self):
-        return self.centerX
+        return self.width / 2
 
     def getCenterY(self):
-        return self.centerY
+        return self.height / 2
 
 
     def getColor(self):
