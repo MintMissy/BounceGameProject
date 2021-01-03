@@ -113,7 +113,7 @@ while True:
     if gameOver:
         # Game over title
         screen.blit(textGameOver, textGameOver_rect)
-        # Your score title
+        # Refresh your score title
         textScore_rect = textScore.get_rect(center=
                                             (screenProperties.getCenterX(),
                                              screenProperties.getCenterY() - screenProperties.width / 10))
