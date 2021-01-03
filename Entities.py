@@ -1,7 +1,7 @@
 class EntityVector:
-    colorR = 150
-    colorG = 160
-    colorB = 239
+    colorR = 255
+    colorG = 255
+    colorB = 230
     entityColor = (colorR, colorG, colorB)
 
     speed = 3

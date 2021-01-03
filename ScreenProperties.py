@@ -2,9 +2,9 @@ class ScreenProperties:
     width = 800
     height = 600
 
-    colorR = 218
-    colorG = 245
-    colorB = 244
+    colorR = 48
+    colorG = 48
+    colorB = 54
     screenColor = (colorR, colorG, colorB)
 
     def getCenterX(self):
