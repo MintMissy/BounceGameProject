@@ -34,14 +34,26 @@ entity.setGravity(0.2)
 
 # Setting score value
 score = 0
-# Setting basic font options
-textProperties = TextProperties.Text()
 
-font = pygame.font.Font(textProperties.font, textProperties.size)
-text = font.render(str(score), True, textProperties.textColor)
-text_rect = text.get_rect(center=
+# Setting basic font options
+scoreProperties = TextProperties.Text()
+# Create new text that show score
+fontScore = pygame.font.Font(scoreProperties.font, scoreProperties.size)
+textScore = fontScore.render(str(score), True, scoreProperties.textColor)
+textScore_rect = textScore.get_rect(center=
                           (screenProperties.getCenterX(),
                            screenProperties.getCenterY() - screenProperties.width / 7))
+# Create new text that is visible if player lose
+gameOverProperties = TextProperties.Text()
+gameOverProperties.setSize(70)
+fontGameOver = pygame.font.Font(gameOverProperties.font, gameOverProperties.size)
+textGameOver = fontGameOver.render("Game Over", True, gameOverProperties.textColor)
+textGameOver_rect = textGameOver.get_rect(center=
+                          (screenProperties.getCenterX(),
+                           screenProperties.getCenterY() - screenProperties.width / 5))
+
+# Variable that checks if player lost
+gameOver = False
 
 while True:
     for event in pygame.event.get():
@@ -81,19 +93,36 @@ while True:
                     score += 1
                 # Move ball it to left
                 entity.setPositionX(entity.positionX - entity.speed)
+    else:
+        gameOver = True
 
     screen.fill((screenProperties.getColor()))
 
-    # If score is 10/100/1000 center it
-    if score == 10 or 100 or 1000:
-        text_rect = text.get_rect(center=
-                                  (screenProperties.getCenterX(),
-                                   screenProperties.getCenterY() - screenProperties.width / 7))
-    # Draw score at screen
-    text = font.render(str(score), True, textProperties.textColor)
-    screen.blit(text, text_rect)
+    # Score text appears when game is on
+    if not gameOver:
+        # If score is 10/100/1000 center it
+        if score == 10 or 100 or 1000:
+            textScore_rect = textScore.get_rect(center=
+                                      (screenProperties.getCenterX(),
+                                       screenProperties.getCenterY() - screenProperties.width / 7))
+        # Draw score at screen
+        textScore = fontScore.render(str(score), True, scoreProperties.textColor)
+        screen.blit(textScore, textScore_rect)
 
-    # Draw an object
+    # What happens if game is off
+    if gameOver:
+        # Game over title
+        screen.blit(textGameOver, textGameOver_rect)
+        # Your score title
+        textScore_rect = textScore.get_rect(center=
+                                            (screenProperties.getCenterX(),
+                                             screenProperties.getCenterY() - screenProperties.width / 10))
+        scoreProperties.setSize(40)
+        fontScore = pygame.font.Font(scoreProperties.font, scoreProperties.size)
+        textScore = fontScore.render("Your score " + str(score), True, scoreProperties.textColor)
+        screen.blit(textScore, textScore_rect)
+
+    # Draw an object (ball etc)
     pygame.draw.circle(
         screen,
         entity.entityColor,
