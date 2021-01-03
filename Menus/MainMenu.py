@@ -1,4 +1,4 @@
-# TODO make menu with buttons https://www.youtube.com/watch?v=4_9twnEduFA
+# TODO make menu with buttons watch later on youtube
 from Menus.Menu import Menu
 
 
