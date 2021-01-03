@@ -24,6 +24,9 @@ entity.setRadius(30)
 entity.setPositionX(screenProperties.getCenterX())
 entity.setPositionY(screenProperties.getCenterY())
 
+# set entity speed
+entity.setSpeed(0.4)
+
 # Setting gravity speed
 entity.setGravity(0.5)
 
@@ -46,9 +49,21 @@ while True:
     if entity.positionY + entity.radius < screenProperties.height:
         entity.setPositionY(entity.positionY + entity.gravitySpeed)
 
-    # TODO Bouncing
-    #if entity.bounceRight:
+    # Bouncing
+    # If ball don't touch bottom continue
+    if entity.positionY < screenProperties.height - entity.radius:
+        if entity.bounceRight:
+            # If ball touch right side change bounce direction
+            if entity.positionX + entity.radius >= screenProperties.width:
+                entity.setBounce(False)
+            # Move ball it to right
+            entity.setPositionX(entity.positionX + entity.speed)
 
-
+        else:
+            # If ball touch left side change bounce direction
+            if entity.positionX <= 0 + entity.radius:
+                entity.setBounce(True)
+            # Move ball it to left
+            entity.setPositionX(entity.positionX - entity.speed)
 
     pygame.display.flip()
