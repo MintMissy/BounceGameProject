@@ -25,7 +25,6 @@ class EntityVector:
     def setGravity(self, newGravity):
         self.gravitySpeed = newGravity
 
-
     def setColorR(self, newColor):
         self.colorR = newColor
 

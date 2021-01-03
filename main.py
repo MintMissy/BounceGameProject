@@ -1,5 +1,3 @@
-import random
-
 import pygame
 
 import TextProperties
@@ -42,20 +40,14 @@ textGameOver_rect = textGameOver.get_rect(center=
                                           (screenProperties.getCenterX(),
                                            screenProperties.getCenterY() - screenProperties.width / 5))
 
+# Create instance of left spikes properties
+spikePropertiesL = SpikesProperties.LeftSpike()
+spikePropertiesL.refreshPositionY()
+# Create instance of right spikes properties
+spikePropertiesR = SpikesProperties.RightSpike()
+
 # Variable that checks if player lost
 gameOver = False
-
-
-def createSpike():
-    return pygame.draw.polygon(
-        screen,
-        self.spikeColor,
-        [[self.positionX, self.positionY],
-         [self.positionX, self.positionY + self.height],
-         [self.positionX - self.width,
-          (self.positionY + self.positionY + self.height) / 2]]
-    )
-
 
 while True:
     for event in pygame.event.get():
@@ -66,6 +58,13 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 entityProperties.setGravity(entityProperties.defaultJumpHeight)
+            if event.key == pygame.K_BACKSPACE:
+                gameOver = False
+                entityProperties.setPositionY(screenProperties.height / 2)
+                entityProperties.setPositionX(screenProperties.width / 2)
+                entityProperties.setRadius(30)
+                entityProperties.setSpeed(entityProperties.defaultSpeed)
+                entityProperties.setGravity(entityProperties.defaultGravity)
 
     # Gravity
     if entityProperties.positionY + entityProperties.radius < screenProperties.height:
@@ -86,6 +85,8 @@ while True:
                 if entityProperties.positionX + entityProperties.radius >= screenProperties.width:
                     entityProperties.setBounce(False)
                     score += 1
+                    # Change position of left spike
+                    spikePropertiesL.refreshPositionY()
                 # Move ball it to right
                 entityProperties.setPositionX(entityProperties.positionX + entityProperties.speed)
             else:
@@ -93,6 +94,8 @@ while True:
                 if entityProperties.positionX <= 0 + entityProperties.radius:
                     entityProperties.setBounce(True)
                     score += 1
+                    # Change position of right spike
+                    spikePropertiesR.refreshPositionY()
                 # Move ball it to left
                 entityProperties.setPositionX(entityProperties.positionX - entityProperties.speed)
     else:
@@ -135,18 +138,12 @@ while True:
         (entityProperties.positionX, entityProperties.positionY),
         entityProperties.radius)
 
-    # Create instance of right spikes properties
-    spikeProperties = SpikesProperties.RightSpike()
-    # Draw spike - right side
-    spikeProperties.refreshPositionY()
-    spikeRight = spikeProperties.createSpike(screen)
-    spikeProperties.refreshPositionY()
-    spikeRightA = spikeProperties.createSpike(screen)
-    spikeProperties.refreshPositionY()
-    spikeRightB = spikeProperties.createSpike(screen)
+    # Create spikes on the screen
+    spikeRight = spikePropertiesR.createSpike(screen)
+    spikeLeft = spikePropertiesL.createSpike(screen)
 
-    # Collision with spike
-    if entity.colliderect(spikeRight and spikeRightB and spikeRightA):
+    # Spikes visible Collision with spike
+    if entity.colliderect(spikeRight or spikeLeft):
         gameOver = True
 
     pygame.display.flip()

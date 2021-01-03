@@ -5,7 +5,8 @@ import ScreenProperties
 screenProperties = ScreenProperties.ScreenProperties()
 
 
-class Spike:
+class LeftSpike:
+
     colorR = 255
     colorG = 255
     colorB = 255
@@ -32,8 +33,22 @@ class Spike:
     def setPositionX(self, newPositionX):
         self.positionX = newPositionX
 
-    def setPositionY(self, newPositionY):
-        self.positionY = newPositionY
+    def createSpike(self, screen):
+        return pygame.draw.polygon(
+            screen,
+            self.spikeColor,
+            [[self.positionX, self.positionY],
+             [self.positionX, self.positionY + self.height],
+             [self.positionX + self.width,
+              (self.positionY + self.positionY + self.height) / 2]]
+        )
+
+
+class RightSpike(LeftSpike):
+    import ScreenProperties
+    screenProperties = ScreenProperties.ScreenProperties()
+
+    positionX = screenProperties.width
 
     def createSpike(self, screen):
         return pygame.draw.polygon(
@@ -44,14 +59,3 @@ class Spike:
              [self.positionX - self.width,
               (self.positionY + self.positionY + self.height) / 2]]
         )
-
-
-class RightSpike(Spike):
-    import ScreenProperties
-    screenProperties = ScreenProperties.ScreenProperties()
-
-    positionX = screenProperties.width
-
-
-class LeftSpike(Spike):
-    positionX = 0
