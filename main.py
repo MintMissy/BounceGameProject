@@ -1,5 +1,6 @@
 import pygame
 
+import TextProperties
 import Entities
 import ScreenProperties
 
@@ -31,6 +32,17 @@ entity.setSpeed(0.4)
 # Setting gravity speed
 entity.setGravity(0.2)
 
+# Setting score value
+score = 0
+# Setting basic font options
+textProperties = TextProperties.Text()
+
+font = pygame.font.Font(textProperties.font, textProperties.size)
+text = font.render(str(score), True, textProperties.textColor)
+text_rect = text.get_rect(center=
+                          (screenProperties.getCenterX(),
+                           screenProperties.getCenterY() - screenProperties.width / 7))
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -49,22 +61,39 @@ while True:
     # Bouncing
     # If ball don't touch bottom continue
     if entity.positionY < screenProperties.height - entity.radius:
-        if entity.bounceRight:
-            # If ball touch right side change bounce direction
-            if entity.positionX + entity.radius >= screenProperties.width:
-                entity.setBounce(False)
-            # Move ball it to right
-            entity.setPositionX(entity.positionX + entity.speed)
+        # If ball touch top place it under and set default gravity
+        if not entity.positionY - entity.radius > 0:
+            entity.setPositionY(1 + entity.radius)
+            entity.setGravity(0.05)
+        # If ball don't touch top continue
         else:
-            # If ball touch left side change bounce direction
-            if entity.positionX <= 0 + entity.radius:
-                entity.setBounce(True)
-            # Move ball it to left
-            entity.setPositionX(entity.positionX - entity.speed)
+            if entity.bounceRight:
+                # If ball touch right side change bounce direction
+                if entity.positionX + entity.radius >= screenProperties.width:
+                    entity.setBounce(False)
+                    score += 1
+                # Move ball it to right
+                entity.setPositionX(entity.positionX + entity.speed)
+            else:
+                # If ball touch left side change bounce direction
+                if entity.positionX <= 0 + entity.radius:
+                    entity.setBounce(True)
+                    score += 1
+                # Move ball it to left
+                entity.setPositionX(entity.positionX - entity.speed)
 
     screen.fill((screenProperties.getColor()))
 
-    # entity = pygame.image.load('Zadanie2_ball.png')
+    # If score is 10/100/1000 center it
+    if score == 10 or 100 or 1000:
+        text_rect = text.get_rect(center=
+                                  (screenProperties.getCenterX(),
+                                   screenProperties.getCenterY() - screenProperties.width / 7))
+    # Draw score at screen
+    text = font.render(str(score), True, textProperties.textColor)
+    screen.blit(text, text_rect)
+
+    # Draw an object
     pygame.draw.circle(
         screen,
         entity.entityColor,
