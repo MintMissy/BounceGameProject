@@ -19,19 +19,6 @@ screen = pygame.display.set_mode((screenProperties.width, screenProperties.heigh
 # Create entity at the middle of the screen
 entity = Entities.EntityCircle()
 
-# set size of entity
-entity.setRadius(30)
-
-# Make position of entity at the center of the screen
-entity.setPositionX(screenProperties.getCenterX())
-entity.setPositionY(screenProperties.getCenterY())
-
-# set entity speed
-entity.setSpeed(0.4)
-
-# Setting gravity speed
-entity.setGravity(0.2)
-
 # Setting score value
 score = 0
 
@@ -63,7 +50,7 @@ while True:
         # Check if player use space to jump ball
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                entity.setGravity(-0.6)
+                entity.setGravity(entity.defaultJumpHeight)
 
     # Gravity
     if entity.positionY + entity.radius < screenProperties.height:

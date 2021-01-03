@@ -1,14 +1,21 @@
 class EntityVector:
+    import ScreenProperties
+
+    screenProperties = ScreenProperties.ScreenProperties()
+
     colorR = 255
     colorG = 255
     colorB = 230
     entityColor = (colorR, colorG, colorB)
 
-    speed = 3
-    gravitySpeed = 0.4
+    speed = 0.5
+    defaultSpeed = 0.5
+    gravitySpeed = 0.2
+    defaultGravity = 0.2
+    defaultJumpHeight = -0.6
 
-    positionX = 100
-    positionY = 100
+    positionX = screenProperties.getCenterX()
+    positionY = screenProperties.getCenterY()
 
     bounceRight = True
 
@@ -39,7 +46,7 @@ class EntityVector:
 
 
 class EntityCircle(EntityVector):
-    radius = 5
+    radius = 30
 
     def setRadius(self, newRadius):
         self.radius = newRadius
