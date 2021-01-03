@@ -1,8 +1,11 @@
-class Spike:
-    import random
-    import ScreenProperties
-    screenProperties = ScreenProperties.ScreenProperties()
+import pygame
+import random
+import ScreenProperties
 
+screenProperties = ScreenProperties.ScreenProperties()
+
+
+class Spike:
     colorR = 255
     colorG = 255
     colorB = 255
@@ -12,7 +15,10 @@ class Spike:
     height = 30
 
     positionX = 0
-    positionY = random.randrange(0, screenProperties.height)
+    positionY = random.randrange(0, screenProperties.height - height)
+
+    def refreshPositionY(self):
+        self.positionY = random.randrange(0, screenProperties.height - self.height)
 
     def setColorR(self, newColor):
         self.colorR = newColor
@@ -28,6 +34,16 @@ class Spike:
 
     def setPositionY(self, newPositionY):
         self.positionY = newPositionY
+
+    def createSpike(self, screen):
+        return pygame.draw.polygon(
+            screen,
+            self.spikeColor,
+            [[self.positionX, self.positionY],
+             [self.positionX, self.positionY + self.height],
+             [self.positionX - self.width,
+              (self.positionY + self.positionY + self.height) / 2]]
+        )
 
 
 class RightSpike(Spike):

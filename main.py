@@ -1,9 +1,11 @@
+import random
+
 import pygame
 
 import TextProperties
 import EntitiesProperties
 import ScreenProperties
-import Spikes
+import SpikesProperties
 
 pygame.init()
 
@@ -42,6 +44,18 @@ textGameOver_rect = textGameOver.get_rect(center=
 
 # Variable that checks if player lost
 gameOver = False
+
+
+def createSpike():
+    return pygame.draw.polygon(
+        screen,
+        self.spikeColor,
+        [[self.positionX, self.positionY],
+         [self.positionX, self.positionY + self.height],
+         [self.positionX - self.width,
+          (self.positionY + self.positionY + self.height) / 2]]
+    )
+
 
 while True:
     for event in pygame.event.get():
@@ -122,19 +136,17 @@ while True:
         entityProperties.radius)
 
     # Create instance of right spikes properties
-    spikePropertiesR = Spikes.RightSpike
+    spikeProperties = SpikesProperties.RightSpike()
     # Draw spike - right side
-    spikeRight = pygame.draw.polygon(
-        screen,
-        spikePropertiesR.spikeColor,
-        [[spikePropertiesR.positionX, spikePropertiesR.positionY],
-         [spikePropertiesR.positionX, spikePropertiesR.positionY + spikePropertiesR.height],
-         [spikePropertiesR.positionX - spikePropertiesR.width,
-          (spikePropertiesR.positionY + spikePropertiesR.positionY + spikePropertiesR.height) / 2]]
-    )
+    spikeProperties.refreshPositionY()
+    spikeRight = spikeProperties.createSpike(screen)
+    spikeProperties.refreshPositionY()
+    spikeRightA = spikeProperties.createSpike(screen)
+    spikeProperties.refreshPositionY()
+    spikeRightB = spikeProperties.createSpike(screen)
 
     # Collision with spike
-    if entity.colliderect(spikeRight):
+    if entity.colliderect(spikeRight and spikeRightB and spikeRightA):
         gameOver = True
 
     pygame.display.flip()
