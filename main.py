@@ -65,6 +65,7 @@ while True:
                 entityProperties.setRadius(30)
                 entityProperties.setSpeed(entityProperties.defaultSpeed)
                 entityProperties.setGravity(entityProperties.defaultGravity)
+                score = 0
 
     # Gravity
     if entityProperties.positionY + entityProperties.radius < screenProperties.height:
@@ -143,7 +144,9 @@ while True:
     spikeLeft = spikePropertiesL.createSpike(screen)
 
     # Spikes visible Collision with spike
-    if entity.colliderect(spikeRight or spikeLeft):
+    if entity.colliderect(spikeRight):
+        gameOver = True
+    elif entity.colliderect(spikeLeft):
         gameOver = True
 
     pygame.display.flip()
