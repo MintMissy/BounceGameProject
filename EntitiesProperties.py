@@ -22,6 +22,10 @@ class EntityVector:
     def setSpeed(self, newSpeed):
         self.speed = newSpeed
 
+    def setGravity(self, newGravity):
+        self.gravitySpeed = newGravity
+
+
     def setColorR(self, newColor):
         self.colorR = newColor
 
@@ -31,14 +35,13 @@ class EntityVector:
     def setColorB(self, newColor):
         self.colorB = newColor
 
+
     def setPositionX(self, newPositionX):
         self.positionX = newPositionX
 
     def setPositionY(self, newPositionY):
         self.positionY = newPositionY
 
-    def setGravity(self, newGravity):
-        self.gravitySpeed = newGravity
 
     # If true bounce right
     def setBounce(self, newBounce):
