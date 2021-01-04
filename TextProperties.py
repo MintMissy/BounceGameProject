@@ -11,7 +11,6 @@ class Text:
     def setSize(self, newSize):
         self.size = newSize
 
-
     def setFont(self, newFont):
         self.font = newFont
 

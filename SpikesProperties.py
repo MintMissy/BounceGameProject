@@ -6,7 +6,6 @@ screenProperties = GameMenuProperties.GameMenuProperties()
 
 
 class LeftSpike:
-
     colorR = 255
     colorG = 255
     colorB = 255

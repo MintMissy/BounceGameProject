@@ -13,7 +13,6 @@ class MenuProperties:
     def getCenterY(self):
         return self.height / 2
 
-
     def setColorR(self, newColor):
         self.colorR = newColor
 

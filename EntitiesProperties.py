@@ -34,13 +34,11 @@ class EntityVector:
     def setColorB(self, newColor):
         self.colorB = newColor
 
-
     def setPositionX(self, newPositionX):
         self.positionX = newPositionX
 
     def setPositionY(self, newPositionY):
         self.positionY = newPositionY
-
 
     # If true bounce right
     def setBounce(self, newBounce):
