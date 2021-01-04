@@ -313,9 +313,7 @@ while True:
                         gameMenuProperties.getCenterX(),
                         gameMenuProperties.getCenterY() - gameMenuProperties.width / 7))
             # Change color of score title in game
-            scoreProperties.setColorR(58)
-            scoreProperties.setColorG(58)
-            scoreProperties.setColorB(64)
+            scoreProperties.setColors(58, 58, 64)
             scoreProperties.refreshColor()
             # Draw score at screen
             textScore = fontScore.render(str(score), True, scoreProperties.textColor)
@@ -335,9 +333,7 @@ while True:
                     gameMenuProperties.getCenterX(), gameMenuProperties.getCenterY() - gameMenuProperties.width / 10))
             scoreProperties.setSize(40)
             # Change color of score title to yellow
-            scoreProperties.setColorR(255)
-            scoreProperties.setColorG(255)
-            scoreProperties.setColorB(64)
+            scoreProperties.setColors(255, 255, 64)
             scoreProperties.refreshColor()
             # Draw your score title at game over screen
             fontScore = pygame.font.Font(scoreProperties.font, scoreProperties.size)
