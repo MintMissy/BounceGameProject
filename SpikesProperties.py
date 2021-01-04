@@ -1,8 +1,8 @@
 import pygame
 import random
-import ScreenProperties
+from Menus import GameMenuProperties
 
-screenProperties = ScreenProperties.ScreenProperties()
+screenProperties = GameMenuProperties.GameMenuProperties()
 
 
 class LeftSpike:
@@ -45,8 +45,7 @@ class LeftSpike:
 
 
 class RightSpike(LeftSpike):
-    import ScreenProperties
-    screenProperties = ScreenProperties.ScreenProperties()
+    screenProperties = GameMenuProperties.GameMenuProperties()
 
     positionX = screenProperties.width
 

@@ -1,7 +1,7 @@
 class EntityVector:
-    import ScreenProperties
+    import Menus.GameMenuProperties as GameMenuProperties
 
-    screenProperties = ScreenProperties.ScreenProperties()
+    screenProperties = GameMenuProperties.GameMenuProperties()
 
     colorR = 255
     colorG = 255
