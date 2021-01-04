@@ -34,6 +34,57 @@ entityProperties = EntitiesProperties.EntityCircle()
 startMenuProperties = StartMenuProperties.StartMenuProperties()
 # Set game screen size
 startScreen = pygame.display.set_mode((startMenuProperties.width, startMenuProperties.height))
+# Bounce Game Title
+bounceGameProperties = TextProperties.Text()
+bounceGameProperties.setSize(70)
+fontBounceGame = pygame.font.Font(bounceGameProperties.font, bounceGameProperties.size)
+textBounceGame = fontBounceGame.render("Bounce Game", True, bounceGameProperties.textColor)
+textBounceGame_rect = textBounceGame.get_rect(
+    center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8))
+# Start Game Title
+startGameProperties = TextProperties.Text()
+startGameProperties.setSize(50)
+startGameProperties.setColorR(240)
+startGameProperties.setColorG(240)
+startGameProperties.setColorB(90)
+startGameProperties.refreshColor()
+fontStartGame = pygame.font.Font(startGameProperties.font, startGameProperties.size)
+textStartGame = fontStartGame.render("Start", True, startGameProperties.textColor)
+textStartGame_rect = textStartGame.get_rect(
+    center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8 * 3))
+# Options Title
+optionsProperties = TextProperties.Text()
+optionsProperties.setSize(50)
+optionsProperties.setColorR(240)
+optionsProperties.setColorG(240)
+optionsProperties.setColorB(90)
+optionsProperties.refreshColor()
+fontOptions = pygame.font.Font(optionsProperties.font, optionsProperties.size)
+textOptions = fontOptions.render("Options", True, optionsProperties.textColor)
+textOptions_rect = textOptions.get_rect(
+    center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8 * 4))
+# Credits Title
+creditsProperties = TextProperties.Text()
+creditsProperties.setSize(50)
+creditsProperties.setColorR(240)
+creditsProperties.setColorG(240)
+creditsProperties.setColorB(90)
+creditsProperties.refreshColor()
+creditsOptions = pygame.font.Font(creditsProperties.font, creditsProperties.size)
+textCredits = creditsOptions.render("Credits", True, creditsProperties.textColor)
+textCredits_rect = textCredits.get_rect(
+    center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8 * 5))
+# Quit Title
+quitProperties = TextProperties.Text()
+quitProperties.setSize(50)
+quitProperties.setColorR(240)
+quitProperties.setColorG(240)
+quitProperties.setColorB(90)
+quitProperties.refreshColor()
+fontQuit = pygame.font.Font(quitProperties.font, quitProperties.size)
+textQuit = fontQuit.render("Quit", True, quitProperties.textColor)
+textQuit_rect = textQuit.get_rect(
+    center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8 * 6))
 
 # GAME OVER MENU
 # Setting score value
@@ -79,15 +130,28 @@ while True:
     # PLAYER IN MAIN MENU
     if not startMenuProperties.gameStart:
         # Clear every frame
-        gameScreen.fill((startMenuProperties.getColor()))
+        gameScreen.fill(startMenuProperties.screenColor)
 
-
+        # Bounce Game title
+        gameScreen.blit(textBounceGame, textBounceGame_rect)
+        gameScreen.blit(textStartGame, textStartGame_rect)
+        gameScreen.blit(textOptions, textOptions_rect)
+        gameScreen.blit(textCredits, textCredits_rect)
+        gameScreen.blit(textQuit, textQuit_rect)
+        # Create first button
+        # startButton = pygame.draw.rect(
+        #     startScreen,
+        #     startMenuProperties.buttonColor,
+        #     ([startMenuProperties.width / 4, startMenuProperties.height / 6],
+        #      [startMenuProperties.width / 4 * 2, startMenuProperties.height / 6 * 1.0005])
+        #
+        # )
 
 
     # PLAYER IN GAME
     else:
         # Clear every frame
-        gameScreen.fill((gameMenuProperties.getColor()))
+        gameScreen.fill(gameMenuProperties.screenColor)
 
         # SHOW SCORE AT SCREEN
         # SHOW SCORE AT SCREEN
@@ -98,6 +162,11 @@ while True:
                     center=(
                         gameMenuProperties.getCenterX(),
                         gameMenuProperties.getCenterY() - gameMenuProperties.width / 7))
+            # Change color of score title in game
+            scoreProperties.setColorR(58)
+            scoreProperties.setColorG(58)
+            scoreProperties.setColorB(64)
+            scoreProperties.refreshColor()
             # Draw score at screen
             textScore = fontScore.render(str(score), True, scoreProperties.textColor)
             gameScreen.blit(textScore, textScore_rect)
@@ -111,6 +180,12 @@ while True:
                 center=(
                     gameMenuProperties.getCenterX(), gameMenuProperties.getCenterY() - gameMenuProperties.width / 10))
             scoreProperties.setSize(40)
+            # Change color of score title to yellow
+            scoreProperties.setColorR(255)
+            scoreProperties.setColorG(255)
+            scoreProperties.setColorB(64)
+            scoreProperties.refreshColor()
+            # Draw your score title at game over screen
             fontScore = pygame.font.Font(scoreProperties.font, scoreProperties.size)
             textScore = fontScore.render("Your score " + str(score), True, scoreProperties.textColor)
             gameScreen.blit(textScore, textScore_rect)
@@ -171,5 +246,4 @@ while True:
             gameOver = True
         elif entity.colliderect(spikeLeft):
             gameOver = True
-
     pygame.display.flip()

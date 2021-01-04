@@ -14,9 +14,6 @@ class MenuProperties:
         return self.height / 2
 
 
-    def getColor(self):
-        return self.screenColor
-
     def setColorR(self, newColor):
         self.colorR = newColor
 

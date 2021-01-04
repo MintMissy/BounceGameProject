@@ -3,8 +3,8 @@ class Text:
 
     size = 100
 
-    colorR = 58
-    colorG = 58
+    colorR = 255
+    colorG = 255
     colorB = 64
     textColor = (colorR, colorG, colorB)
 
@@ -15,6 +15,8 @@ class Text:
     def setFont(self, newFont):
         self.font = newFont
 
+    def refreshColor(self):
+        self.textColor = (self.colorR, self.colorG, self.colorB)
 
     def setColorR(self, newColor):
         self.colorR = newColor
