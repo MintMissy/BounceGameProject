@@ -17,6 +17,11 @@ class Text:
     def refreshColor(self):
         self.textColor = (self.colorR, self.colorG, self.colorB)
 
+    def setColors(self, newColorR, newColorG, newColorB):
+        self.colorR = newColorR
+        self.colorG = newColorG
+        self.colorB = newColorB
+
     def setColorR(self, newColor):
         self.colorR = newColor
 
