@@ -208,8 +208,15 @@ while True:
                         entityProperties.setSize(entityProperties.defaultSize)
                         entityProperties.setSpeed(entityProperties.defaultSpeed)
                         entityProperties.setGravity(entityProperties.defaultGravity)
-                        # Reset score title position
-                        textScore = createText(scoreProperties, 100, (58, 58, 64), str(score))
+                        # Reset score title position and color
+                        scoreProperties.setColorType(1)
+                        scoreProperties.setColors(15, 207, 23)
+                        scoreProperties.refreshColor()
+                        textScore = createText(scoreProperties, 100, scoreProperties.textColor, str(score))
+                        # Reset background color
+                        gameMenuProperties.setColorType(1)
+                        gameMenuProperties.setColors(45, 237, 53)
+                        gameMenuProperties.refreshScreenColors()
                 # If player didn't hover PLAY AGAIN button change it color to normal
                 else:
                     textPlayAgain = createText(playAgainProperties, playAgainProperties.size, (255, 255, 255),
@@ -234,8 +241,30 @@ while True:
                                                "Back to Lobby")
                     # Check if player clicked BACK TO LOBBY button if it do move to Main Menu
                     if event.type == pygame.MOUSEBUTTONUP:
-                        # TODO add exit to main menu
-                        print("I should add back to main menu")
+                        score = 0
+                        gameOver = False
+                        # Reset spikes position
+                        spikePropertiesL = SpikesProperties.LeftSpike()
+                        spikePropertiesL.refreshPositionY()
+                        spikePropertiesR = SpikesProperties.RightSpike()
+                        # Reset entity position
+                        entityProperties = EntitiesProperties.EntityCircle()
+                        entityProperties.setPositionY(gameMenuProperties.height / 2)
+                        entityProperties.setPositionX(gameMenuProperties.width / 2)
+                        entityProperties.setSize(entityProperties.defaultSize)
+                        entityProperties.setSpeed(entityProperties.defaultSpeed)
+                        entityProperties.setGravity(entityProperties.defaultGravity)
+                        # Reset score title position and color
+                        scoreProperties.setColorType(1)
+                        scoreProperties.setColors(15, 207, 23)
+                        scoreProperties.refreshColor()
+                        textScore = createText(scoreProperties, 100, scoreProperties.textColor, str(score))
+                        # Reset background color
+                        gameMenuProperties.setColorType(1)
+                        gameMenuProperties.setColors(45, 237, 53)
+                        gameMenuProperties.refreshScreenColors()
+                        # Reset game start option
+                        startMenuProperties.setGameStart(False)
                 # If player didn't hover BACK TO LOBBY button change it color to normal
                 else:
                     textBackLobby = createText(backLobbyProperties, backLobbyProperties.size, (255, 255, 255),
@@ -416,13 +445,12 @@ while True:
                 gameOver = True
 
     # Gradient background in main menu
-    if counter % 10 == 0:
-        if not startMenuProperties.gameStart:
+    if not startMenuProperties.gameStart:
+        if counter % 10 == 0:
             startMenuProperties.dynamicColors(0)
             startMenuProperties.refreshScreenColors()
-            print(counter)
             counter = 1
-    else:
-        counter += 1
+        else:
+            counter += 1
 
     pygame.display.flip()
