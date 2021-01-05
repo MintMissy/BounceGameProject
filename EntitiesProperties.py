@@ -8,6 +8,8 @@ class EntityVector:
     colorB = 230
     entityColor = (colorR, colorG, colorB)
 
+    defaultSize = 30
+    size = 30
     speed = 0.5
     defaultSpeed = 0.5
     gravitySpeed = 0.2
@@ -44,19 +46,17 @@ class EntityVector:
     def setBounce(self, newBounce):
         self.bounceRight = newBounce
 
+    def setSize(self, newSize):
+        self.size = newSize
+
 
 class EntityCircle(EntityVector):
-    radius = 30
-
-    def setRadius(self, newRadius):
-        self.radius = newRadius
+    # is circle
+    a = 5
 
 
 class EntitySquare(EntityVector):
-    sideSize = 5
-
-    def setSideSize(self, newSideSize):
-        self.sideSize = newSideSize
+    b = 5
 
 
 class EntityGraphic():

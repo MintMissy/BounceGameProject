@@ -210,15 +210,21 @@ while True:
                                                "Play Again")
                     # Check if player clicked PLAY AGAIN button if it do move to Play again menu
                     if event.type == pygame.MOUSEBUTTONUP:
-                        # TODO add play again option
-                        # gameOver = False
-                        # entityProperties.setPositionY(screenProperties.height / 2)
-                        # entityProperties.setPositionX(screenProperties.width / 2)
-                        # entityProperties.setRadius(30)
-                        # entityProperties.setSpeed(entityProperties.defaultSpeed)
-                        # entityProperties.setGravity(entityProperties.defaultGravity)
-                        # score = 0
-                        print("I should add play again")
+                        score = 0
+                        gameOver = False
+                        # Reset spikes position
+                        spikePropertiesL = SpikesProperties.LeftSpike()
+                        spikePropertiesL.refreshPositionY()
+                        spikePropertiesR = SpikesProperties.RightSpike()
+                        # Reset entity position
+                        entityProperties = EntitiesProperties.EntityCircle()
+                        entityProperties.setPositionY(gameMenuProperties.height / 2)
+                        entityProperties.setPositionX(gameMenuProperties.width / 2)
+                        entityProperties.setSize(entityProperties.defaultSize)
+                        entityProperties.setSpeed(entityProperties.defaultSpeed)
+                        entityProperties.setGravity(entityProperties.defaultGravity)
+                        # Reset score title position
+                        textScore = createText(scoreProperties, 100, (58, 58, 64), str(score))
                 # If player didn't hover PLAY AGAIN button change it color to normal
                 else:
                     textPlayAgain = createText(playAgainProperties, playAgainProperties.size, (240, 240, 90),
@@ -307,8 +313,8 @@ while True:
             # Draw your score title at game over screen
             gameScreen.blit(textScore, textScore_rect)
             # Smoothly change size of entity to 0 if it died
-            if entityProperties.radius > 0:
-                entityProperties.setRadius(entityProperties.radius - 0.2)
+            if entityProperties.size > 0:
+                entityProperties.setSize(entityProperties.size - 0.2)
                 entityProperties.setSpeed(0)
 
         # DRAW ENTITY
@@ -316,7 +322,7 @@ while True:
             gameScreen,
             entityProperties.entityColor,
             (entityProperties.positionX, entityProperties.positionY),
-            entityProperties.radius)
+            entityProperties.size)
 
         # Create spikes on the screen
         spikeRight = spikePropertiesR.createSpike(gameScreen)
@@ -324,22 +330,22 @@ while True:
 
         # PHYSICS
         # Gravity
-        if entityProperties.positionY + entityProperties.radius < gameMenuProperties.height:
+        if entityProperties.positionY + entityProperties.size < gameMenuProperties.height:
             entityProperties.setPositionY(entityProperties.positionY + entityProperties.gravitySpeed)
             entityProperties.setGravity(entityProperties.gravitySpeed + 0.0015)
 
         # Bouncing
         # If ball don't touch bottom continue
-        if entityProperties.positionY < gameMenuProperties.height - entityProperties.radius:
+        if entityProperties.positionY < gameMenuProperties.height - entityProperties.size:
             # If ball touch top place it under and set default gravity
-            if not entityProperties.positionY - entityProperties.radius > 0:
-                entityProperties.setPositionY(1 + entityProperties.radius)
+            if not entityProperties.positionY - entityProperties.size > 0:
+                entityProperties.setPositionY(1 + entityProperties.size)
                 entityProperties.setGravity(0.05)
             # If ball don't touch top continue
             else:
                 if entityProperties.bounceRight:
                     # If ball touch right side change bounce direction
-                    if entityProperties.positionX + entityProperties.radius >= gameMenuProperties.width:
+                    if entityProperties.positionX + entityProperties.size >= gameMenuProperties.width:
                         entityProperties.setBounce(False)
                         score += 1
                         # Change position of left spike
@@ -348,7 +354,7 @@ while True:
                     entityProperties.setPositionX(entityProperties.positionX + entityProperties.speed)
                 else:
                     # If ball touch left side change bounce direction
-                    if entityProperties.positionX <= 0 + entityProperties.radius:
+                    if entityProperties.positionX <= 0 + entityProperties.size:
                         entityProperties.setBounce(True)
                         score += 1
                         # Change position of right spike
