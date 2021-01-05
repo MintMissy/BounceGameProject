@@ -2,9 +2,9 @@ class MenuProperties:
     width = 800
     height = 600
 
-    colorR = 48
-    colorG = 48
-    colorB = 54
+    colorR = 45
+    colorG = 237
+    colorB = 53
     screenColor = (colorR, colorG, colorB)
 
     def getCenterX(self):

@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 import TextProperties
@@ -108,7 +110,10 @@ textBackLobby = createText(backLobbyProperties, 40, (240, 240, 90), "Back to Lob
 textBackLobby_rect = textBackLobby.get_rect(
     center=(gameMenuProperties.getCenterX(), gameMenuProperties.getCenterY() + gameMenuProperties.width / 40 * 7))
 
-skin = "Circle"
+# Current skin of entity
+skin = "Ruby"
+# Check if screen should change color in next tick
+changeScreenColor = 0
 
 while True:
     for event in pygame.event.get():
@@ -367,7 +372,10 @@ while True:
                     # If ball touch right side change bounce direction
                     if entityProperties.positionX + entityProperties.size >= gameMenuProperties.width:
                         entityProperties.setBounce(False)
-                        score += 1
+                        score += 5
+                        # Change screen color after bounce
+                        if score % 5 == 0:
+                            changeScreenColor = 100
                         # Change position of left spike
                         spikePropertiesL.refreshPositionY()
                     # Move ball it to right
@@ -376,13 +384,23 @@ while True:
                     # If ball touch left side change bounce direction
                     if entityProperties.positionX <= 0 + entityProperties.size:
                         entityProperties.setBounce(True)
-                        score += 1
+                        score += 5
+                        # Change screen color after bounce
+                        if score % 5 == 0:
+                            changeScreenColor = 100
                         # Change position of right spike
                         spikePropertiesR.refreshPositionY()
                     # Move ball it to left
                     entityProperties.setPositionX(entityProperties.positionX - entityProperties.speed)
+
         else:
             gameOver = True
+
+        # Changing color of the screen after player hit 5 points
+        if changeScreenColor > 0:
+            gameMenuProperties.dynamicColors()
+            gameMenuProperties.refreshScreenColors()
+            changeScreenColor -= 1
 
         # Spikes visible Collision with spike
         for i in range(len(spikeRight)):
