@@ -108,6 +108,8 @@ textBackLobby = createText(backLobbyProperties, 40, (240, 240, 90), "Back to Lob
 textBackLobby_rect = textBackLobby.get_rect(
     center=(gameMenuProperties.getCenterX(), gameMenuProperties.getCenterY() + gameMenuProperties.width / 40 * 7))
 
+skin = "Circle"
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -136,69 +138,45 @@ while True:
         if not startMenuProperties.gameStart:
             # Check if player hover Start Game button if do, change color of button
             if textStartGame_rect.collidepoint(mousePosition):
-                startGameProperties.setColors(240, 240, 150)
-                startGameProperties.refreshColor()
-                fontStartGame = pygame.font.Font(startGameProperties.font, startGameProperties.size)
-                textStartGame = fontStartGame.render("Start", True, startGameProperties.textColor)
+                textStartGame = createText(startGameProperties, startGameProperties.size, (240, 240, 150), "Start")
                 # Check if player clicked Start Game button Start if it do start game
                 if event.type == pygame.MOUSEBUTTONUP:
                     startMenuProperties.setGameStart(True)
             # If player didn't hover Start Game change it color to normal
             else:
-                startGameProperties.setColors(240, 240, 90)
-                startGameProperties.refreshColor()
-                fontStartGame = pygame.font.Font(startGameProperties.font, startGameProperties.size)
-                textStartGame = fontStartGame.render("Start", True, startGameProperties.textColor)
+                textStartGame = createText(startGameProperties, startGameProperties.size, (240, 240, 90), "Start")
 
             # Check if player hover Options button if do, change color of button
             if textOptions_rect.collidepoint(mousePosition):
-                optionsProperties.setColors(240, 240, 150)
-                optionsProperties.refreshColor()
-                fontOptions = pygame.font.Font(optionsProperties.font, optionsProperties.size)
-                textOptions = fontOptions.render("Options", True, optionsProperties.textColor)
+                textOptions = createText(optionsProperties, optionsProperties.size, (240, 240, 150), "Options")
                 # Check if player clicked Options button Start if it do move to options menu
                 if event.type == pygame.MOUSEBUTTONUP:
                     # TODO add options menu with skins
                     print("I should add options")
             # If player didn't hover Options button change it color to normal
             else:
-                optionsProperties.setColors(240, 240, 90)
-                optionsProperties.refreshColor()
-                fontOptions = pygame.font.Font(optionsProperties.font, optionsProperties.size)
-                textOptions = fontOptions.render("Options", True, optionsProperties.textColor)
+                textOptions = createText(optionsProperties, optionsProperties.size, (240, 240, 90), "Options")
 
             # Check if player hover Credits button if do, change color of button
             if textCredits_rect.collidepoint(mousePosition):
-                creditsProperties.setColors(240, 240, 150)
-                creditsProperties.refreshColor()
-                creditsOptions = pygame.font.Font(creditsProperties.font, creditsProperties.size)
-                textCredits = creditsOptions.render("Credits", True, creditsProperties.textColor)
+                textCredits = createText(creditsProperties, creditsProperties.size, (240, 240, 150), "Credits")
                 # Check if player clicked Credits button Start if it do move to Credits menu
                 if event.type == pygame.MOUSEBUTTONUP:
                     # TODO add credits menu with my name
                     print("I should add credits")
             # If player didn't hover Credits button change it color to normal
             else:
-                creditsProperties.setColors(240, 240, 90)
-                creditsProperties.refreshColor()
-                creditsOptions = pygame.font.Font(creditsProperties.font, creditsProperties.size)
-                textCredits = creditsOptions.render("Credits", True, creditsProperties.textColor)
+                textCredits = createText(creditsProperties, creditsProperties.size, (240, 240, 90), "Credits")
 
             # Check if player hover Quit button if do, change color of button
             if textQuit_rect.collidepoint(mousePosition):
-                quitProperties.setColors(240, 240, 150)
-                quitProperties.refreshColor()
-                fontQuit = pygame.font.Font(quitProperties.font, quitProperties.size)
-                textQuit = fontQuit.render("Quit", True, quitProperties.textColor)
+                textQuit = createText(quitProperties, quitProperties.size, (240, 240, 150), "Quit")
                 # Check if player clicked Quit button if it do close game
                 if event.type == pygame.MOUSEBUTTONUP:
                     exit(0)
             # If player didn't hover Quit button change it color to normal
             else:
-                quitProperties.setColors(240, 240, 90)
-                quitProperties.refreshColor()
-                fontQuit = pygame.font.Font(quitProperties.font, quitProperties.size)
-                textQuit = fontQuit.render("Quit", True, quitProperties.textColor)
+                textQuit = createText(quitProperties, quitProperties.size, (240, 240, 90), "Quit")
 
         # REFRESH GAME OVER BUTTONS
         else:
@@ -317,12 +295,60 @@ while True:
                 entityProperties.setSize(entityProperties.size - 0.2)
                 entityProperties.setSpeed(0)
 
-        # DRAW ENTITY
-        entity = pygame.draw.circle(
-            gameScreen,
-            entityProperties.entityColor,
-            (entityProperties.positionX, entityProperties.positionY),
-            entityProperties.size)
+        skin = "TriangleBorder"
+        # DRAW ENTITY WITH SKIN
+        if skin == "CircleBorder":
+            entity = pygame.draw.circle(
+                gameScreen,
+                entityProperties.entityColor,
+                (entityProperties.positionX, entityProperties.positionY),
+                entityProperties.size,
+                10)
+        elif skin == "Circle":
+            entity = pygame.draw.circle(
+                gameScreen,
+                entityProperties.entityColor,
+                (entityProperties.positionX, entityProperties.positionY),
+                entityProperties.size)
+        elif skin == "Square":
+            entity = pygame.draw.rect(
+                gameScreen,
+                entityProperties.entityColor,
+                [entityProperties.positionX - entityProperties.size,
+                 entityProperties.positionY - entityProperties.size,
+                 entityProperties.size * 2,
+                 entityProperties.size * 2
+                 ]
+            )
+        elif skin == "SquareBorder":
+            entity = pygame.draw.rect(
+                gameScreen,
+                entityProperties.entityColor,
+                [entityProperties.positionX - entityProperties.size,
+                 entityProperties.positionY - entityProperties.size,
+                 entityProperties.size * 2,
+                 entityProperties.size * 2
+                 ],
+                10
+            )
+        elif skin == "Triangle":
+            entity = pygame.draw.polygon(
+                gameScreen,
+                entityProperties.entityColor,
+                [(entityProperties.positionX, entityProperties.positionY + entityProperties.size),
+                (entityProperties.positionX - entityProperties.size, entityProperties.positionY - entityProperties.size),
+                (entityProperties.positionX + entityProperties.size, entityProperties.positionY - entityProperties.size)]
+            )
+        elif skin == "TriangleBorder":
+            entity = pygame.draw.polygon(
+                gameScreen,
+                entityProperties.entityColor,
+                [(entityProperties.positionX, entityProperties.positionY + entityProperties.size),
+                (entityProperties.positionX - entityProperties.size, entityProperties.positionY - entityProperties.size),
+                (entityProperties.positionX + entityProperties.size, entityProperties.positionY - entityProperties.size)],
+                10
+            )
+
 
         # Create spikes on the screen
         spikeRight = spikePropertiesR.createSpike(gameScreen)
