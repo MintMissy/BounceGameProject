@@ -1,5 +1,3 @@
-import random
-
 import pygame
 
 import TextProperties
@@ -49,31 +47,31 @@ startMenuProperties = StartMenuProperties.StartMenuProperties()
 startScreen = pygame.display.set_mode((startMenuProperties.width, startMenuProperties.height))
 # Bounce Game Title
 bounceGameProperties = TextProperties.Text()
-textBounceGame = createText(bounceGameProperties, 70, bounceGameProperties.textColor, "Bounce Game")
+textBounceGame = createText(bounceGameProperties, 70, (58, 58, 64), "Bounce Game")
 textBounceGame_rect = textBounceGame.get_rect(
     center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8))
 
 # Start Game Title
 startGameProperties = TextProperties.Text()
-textStartGame = createText(startGameProperties, 50, (240, 240, 90), "Start")
+textStartGame = createText(startGameProperties, 50, (255, 255, 255), "Start")
 textStartGame_rect = textStartGame.get_rect(
     center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8 * 3))
 
 # Options Title
 optionsProperties = TextProperties.Text()
-textOptions = createText(optionsProperties, 50, (240, 240, 90), "Options")
+textOptions = createText(optionsProperties, 50, (255, 255, 255), "Options")
 textOptions_rect = textOptions.get_rect(
     center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8 * 4))
 
 # Credits Title
 creditsProperties = TextProperties.Text()
-textCredits = createText(creditsProperties, 50, (240, 240, 90), "Credits")
+textCredits = createText(creditsProperties, 50, (255, 255, 255), "Credits")
 textCredits_rect = textCredits.get_rect(
     center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8 * 5))
 
 # Quit Title
 quitProperties = TextProperties.Text()
-textQuit = createText(quitProperties, 50, (240, 240, 90), "Quit")
+textQuit = createText(quitProperties, 50, (255, 255, 255), "Quit")
 textQuit_rect = textQuit.get_rect(
     center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8 * 6))
 
@@ -82,31 +80,31 @@ textQuit_rect = textQuit.get_rect(
 score = 0
 # Create new text that show score in the game
 scoreProperties = TextProperties.Text()
-textScore = createText(scoreProperties, scoreProperties.size, scoreProperties.textColor, str(score))
+textScore = createText(scoreProperties, scoreProperties.size, (15, 207, 23), str(score))
 textScore_rect = textScore.get_rect(
     center=(gameMenuProperties.getCenterX(), gameMenuProperties.getCenterY() - gameMenuProperties.width / 7))
 
 # Create new text GAME OVER that is visible if player lose
 gameOverProperties = TextProperties.Text()
-textGameOver = createText(gameOverProperties, 70, gameOverProperties.textColor, "Game Over")
+textGameOver = createText(gameOverProperties, 70, (58, 58, 64), "Game Over")
 textGameOver_rect = textGameOver.get_rect(
     center=(gameMenuProperties.getCenterX(), gameMenuProperties.getCenterY() - gameMenuProperties.width / 5))
 
 # Create new text Play Again that is visible if player lose
 playAgainProperties = TextProperties.Text()
-textPlayAgain = createText(playAgainProperties, 40, (240, 240, 90), "Play Again")
+textPlayAgain = createText(playAgainProperties, 40, (255, 255, 255), "Play Again")
 textPlayAgain_rect = textPlayAgain.get_rect(
     center=(gameMenuProperties.getCenterX(), gameMenuProperties.getCenterY() + gameMenuProperties.width / 40))
 
 # Create new text Options that is visible if player lose
 optionsOverProperties = TextProperties.Text()
-textOptionsOver = createText(optionsOverProperties, 40, (240, 240, 90), "Options")
+textOptionsOver = createText(optionsOverProperties, 40, (255, 255, 255), "Options")
 textOptionsOver_rect = textOptionsOver.get_rect(
     center=(gameMenuProperties.getCenterX(), gameMenuProperties.getCenterY() + gameMenuProperties.width / 40 * 4))
 
 # Create new text Back to lobby that is visible if player lose
 backLobbyProperties = TextProperties.Text()
-textBackLobby = createText(backLobbyProperties, 40, (240, 240, 90), "Back to Lobby")
+textBackLobby = createText(backLobbyProperties, 40, (255, 255, 255), "Back to Lobby")
 textBackLobby_rect = textBackLobby.get_rect(
     center=(gameMenuProperties.getCenterX(), gameMenuProperties.getCenterY() + gameMenuProperties.width / 40 * 7))
 
@@ -114,6 +112,8 @@ textBackLobby_rect = textBackLobby.get_rect(
 skin = "Ruby"
 # Check if screen should change color in next tick
 changeScreenColor = 0
+# Variable for smooth gradient in Main Menu
+counter = 1
 
 while True:
     for event in pygame.event.get():
@@ -141,47 +141,49 @@ while True:
 
         # REFRESH START MAIN MENU
         if not startMenuProperties.gameStart:
+            startMenuProperties.dynamicColors(0)
+            startMenuProperties.refreshScreenColors()
             # Check if player hover Start Game button if do, change color of button
             if textStartGame_rect.collidepoint(mousePosition):
-                textStartGame = createText(startGameProperties, startGameProperties.size, (240, 240, 150), "Start")
+                textStartGame = createText(startGameProperties, startGameProperties.size, (55, 55, 66), "Start")
                 # Check if player clicked Start Game button Start if it do start game
                 if event.type == pygame.MOUSEBUTTONUP:
                     startMenuProperties.setGameStart(True)
             # If player didn't hover Start Game change it color to normal
             else:
-                textStartGame = createText(startGameProperties, startGameProperties.size, (240, 240, 90), "Start")
+                textStartGame = createText(startGameProperties, startGameProperties.size, (255, 255, 255), "Start")
 
             # Check if player hover Options button if do, change color of button
             if textOptions_rect.collidepoint(mousePosition):
-                textOptions = createText(optionsProperties, optionsProperties.size, (240, 240, 150), "Options")
+                textOptions = createText(optionsProperties, optionsProperties.size, (55, 55, 66), "Options")
                 # Check if player clicked Options button Start if it do move to options menu
                 if event.type == pygame.MOUSEBUTTONUP:
                     # TODO add options menu with skins
                     print("I should add options")
             # If player didn't hover Options button change it color to normal
             else:
-                textOptions = createText(optionsProperties, optionsProperties.size, (240, 240, 90), "Options")
+                textOptions = createText(optionsProperties, optionsProperties.size, (255, 255, 255), "Options")
 
             # Check if player hover Credits button if do, change color of button
             if textCredits_rect.collidepoint(mousePosition):
-                textCredits = createText(creditsProperties, creditsProperties.size, (240, 240, 150), "Credits")
+                textCredits = createText(creditsProperties, creditsProperties.size, (55, 55, 66), "Credits")
                 # Check if player clicked Credits button Start if it do move to Credits menu
                 if event.type == pygame.MOUSEBUTTONUP:
                     # TODO add credits menu with my name
                     print("I should add credits")
             # If player didn't hover Credits button change it color to normal
             else:
-                textCredits = createText(creditsProperties, creditsProperties.size, (240, 240, 90), "Credits")
+                textCredits = createText(creditsProperties, creditsProperties.size, (255, 255, 255), "Credits")
 
             # Check if player hover Quit button if do, change color of button
             if textQuit_rect.collidepoint(mousePosition):
-                textQuit = createText(quitProperties, quitProperties.size, (240, 240, 150), "Quit")
+                textQuit = createText(quitProperties, quitProperties.size, (55, 55, 66), "Quit")
                 # Check if player clicked Quit button if it do close game
                 if event.type == pygame.MOUSEBUTTONUP:
                     exit(0)
             # If player didn't hover Quit button change it color to normal
             else:
-                textQuit = createText(quitProperties, quitProperties.size, (240, 240, 90), "Quit")
+                textQuit = createText(quitProperties, quitProperties.size, (255, 255, 255), "Quit")
 
         # REFRESH GAME OVER BUTTONS
         else:
@@ -189,7 +191,7 @@ while True:
             if gameOver:
                 # Check if player hover Play Again button if do, change color of button
                 if textPlayAgain_rect.collidepoint(mousePosition):
-                    textPlayAgain = createText(playAgainProperties, playAgainProperties.size, (240, 240, 150),
+                    textPlayAgain = createText(playAgainProperties, playAgainProperties.size, (55, 55, 66),
                                                "Play Again")
                     # Check if player clicked PLAY AGAIN button if it do move to Play again menu
                     if event.type == pygame.MOUSEBUTTONUP:
@@ -210,13 +212,12 @@ while True:
                         textScore = createText(scoreProperties, 100, (58, 58, 64), str(score))
                 # If player didn't hover PLAY AGAIN button change it color to normal
                 else:
-                    textPlayAgain = createText(playAgainProperties, playAgainProperties.size, (240, 240, 90),
+                    textPlayAgain = createText(playAgainProperties, playAgainProperties.size, (255, 255, 255),
                                                "Play Again")
-                    playAgainProperties.setColors(240, 240, 90)
 
                 # Check if player hover Options button if do, change color of button
                 if textOptionsOver_rect.collidepoint(mousePosition):
-                    textOptionsOver = createText(optionsOverProperties, optionsOverProperties.size, (240, 240, 150),
+                    textOptionsOver = createText(optionsOverProperties, optionsOverProperties.size, (58, 58, 64),
                                                  "Options")
                     # Check if player clicked PLAY AGAIN button if it do move to OPTIONS menu
                     if event.type == pygame.MOUSEBUTTONUP:
@@ -224,12 +225,12 @@ while True:
                         print("I should add options")
                 # If player didn't hover OPTIONS button change it color to normal
                 else:
-                    textOptionsOver = createText(optionsOverProperties, optionsOverProperties.size, (240, 240, 90),
+                    textOptionsOver = createText(optionsOverProperties, optionsOverProperties.size, (255, 255, 255),
                                                  "Options")
 
                 # Check if player hover BACK TO LOBBY button if do, change color of button
                 if textBackLobby_rect.collidepoint(mousePosition):
-                    textBackLobby = createText(backLobbyProperties, backLobbyProperties.size, (240, 240, 150),
+                    textBackLobby = createText(backLobbyProperties, backLobbyProperties.size, (58, 58, 64),
                                                "Back to Lobby")
                     # Check if player clicked BACK TO LOBBY button if it do move to Main Menu
                     if event.type == pygame.MOUSEBUTTONUP:
@@ -237,7 +238,7 @@ while True:
                         print("I should add back to main menu")
                 # If player didn't hover BACK TO LOBBY button change it color to normal
                 else:
-                    textBackLobby = createText(backLobbyProperties, backLobbyProperties.size, (240, 240, 90),
+                    textBackLobby = createText(backLobbyProperties, backLobbyProperties.size, (255, 255, 255),
                                                "Back to Lobby")
 
     # PLAYER IN MAIN MENU
@@ -267,7 +268,7 @@ while True:
                         gameMenuProperties.getCenterX(),
                         gameMenuProperties.getCenterY() - gameMenuProperties.width / 7))
             # Change color of score title in game
-            textScore = createText(scoreProperties, scoreProperties.size, (58, 58, 64), str(score))
+            textScore = createText(scoreProperties, scoreProperties.size, scoreProperties.textColor, str(score))
             # Draw score at screen
             gameScreen.blit(textScore, textScore_rect)
 
@@ -283,7 +284,7 @@ while True:
             textScore_rect = textScore.get_rect(
                 center=(
                     gameMenuProperties.getCenterX(), gameMenuProperties.getCenterY() - gameMenuProperties.width / 10))
-            textScore = createText(scoreProperties, 40, (255, 255, 64), ("Your score " + str(score)))
+            textScore = createText(scoreProperties, 40, (255, 255, 255), ("Your score " + str(score)))
             # Draw your score title at game over screen
             gameScreen.blit(textScore, textScore_rect)
             # Smoothly change size of entity to 0 if it died
@@ -398,8 +399,12 @@ while True:
 
         # Changing color of the screen after player hit 5 points
         if changeScreenColor > 0:
-            gameMenuProperties.dynamicColors()
+            gameMenuProperties.dynamicColors(0)
             gameMenuProperties.refreshScreenColors()
+
+            scoreProperties.dynamicColors(30)
+            scoreProperties.refreshColor()
+
             changeScreenColor -= 1
 
         # Spikes visible Collision with spike
@@ -409,5 +414,15 @@ while True:
         for i in range(len(spikeLeft)):
             if entity.colliderect(spikeLeft[i]):
                 gameOver = True
+
+    # Gradient background in main menu
+    if counter % 10 == 0:
+        if not startMenuProperties.gameStart:
+            startMenuProperties.dynamicColors(0)
+            startMenuProperties.refreshScreenColors()
+            print(counter)
+            counter = 1
+    else:
+        counter += 1
 
     pygame.display.flip()
