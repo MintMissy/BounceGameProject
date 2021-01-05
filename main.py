@@ -246,15 +246,6 @@ while True:
         gameScreen.blit(textOptions, textOptions_rect)
         gameScreen.blit(textCredits, textCredits_rect)
         gameScreen.blit(textQuit, textQuit_rect)
-        # Create first button
-        # startButton = pygame.draw.rect(
-        #     startScreen,
-        #     startMenuProperties.buttonColor,
-        #     ([startMenuProperties.width / 4, startMenuProperties.height / 6],
-        #      [startMenuProperties.width / 4 * 2, startMenuProperties.height / 6 * 1.0005])
-        #
-        # )
-
 
     # PLAYER IN GAME
     else:
@@ -295,60 +286,60 @@ while True:
                 entityProperties.setSize(entityProperties.size - 0.2)
                 entityProperties.setSpeed(0)
 
-        skin = "TriangleBorder"
-        # DRAW ENTITY WITH SKIN
-        if skin == "CircleBorder":
-            entity = pygame.draw.circle(
-                gameScreen,
-                entityProperties.entityColor,
-                (entityProperties.positionX, entityProperties.positionY),
-                entityProperties.size,
-                10)
-        elif skin == "Circle":
-            entity = pygame.draw.circle(
-                gameScreen,
-                entityProperties.entityColor,
-                (entityProperties.positionX, entityProperties.positionY),
-                entityProperties.size)
-        elif skin == "Square":
-            entity = pygame.draw.rect(
-                gameScreen,
-                entityProperties.entityColor,
-                [entityProperties.positionX - entityProperties.size,
-                 entityProperties.positionY - entityProperties.size,
-                 entityProperties.size * 2,
-                 entityProperties.size * 2
-                 ]
-            )
-        elif skin == "SquareBorder":
-            entity = pygame.draw.rect(
-                gameScreen,
-                entityProperties.entityColor,
-                [entityProperties.positionX - entityProperties.size,
-                 entityProperties.positionY - entityProperties.size,
-                 entityProperties.size * 2,
-                 entityProperties.size * 2
-                 ],
-                10
-            )
-        elif skin == "Triangle":
-            entity = pygame.draw.polygon(
-                gameScreen,
-                entityProperties.entityColor,
-                [(entityProperties.positionX, entityProperties.positionY + entityProperties.size),
-                (entityProperties.positionX - entityProperties.size, entityProperties.positionY - entityProperties.size),
-                (entityProperties.positionX + entityProperties.size, entityProperties.positionY - entityProperties.size)]
-            )
-        elif skin == "TriangleBorder":
-            entity = pygame.draw.polygon(
-                gameScreen,
-                entityProperties.entityColor,
-                [(entityProperties.positionX, entityProperties.positionY + entityProperties.size),
-                (entityProperties.positionX - entityProperties.size, entityProperties.positionY - entityProperties.size),
-                (entityProperties.positionX + entityProperties.size, entityProperties.positionY - entityProperties.size)],
-                10
-            )
-
+        skin = "Hexagon"
+        if entityProperties.size > 0:
+            # DRAW ENTITY WITH SKIN
+            if skin == "Circle":
+                entity = pygame.draw.circle(
+                    gameScreen,
+                    entityProperties.entityColor,
+                    (entityProperties.positionX, entityProperties.positionY),
+                    entityProperties.size)
+            elif skin == "Square":
+                entity = pygame.draw.rect(
+                    gameScreen,
+                    entityProperties.entityColor,
+                    [entityProperties.positionX - entityProperties.size,
+                     entityProperties.positionY - entityProperties.size,
+                     entityProperties.size * 2,
+                     entityProperties.size * 2
+                     ]
+                )
+            elif skin == "Triangle":
+                entity = pygame.draw.polygon(
+                    gameScreen,
+                    entityProperties.entityColor,
+                    [(entityProperties.positionX, entityProperties.positionY + entityProperties.size - 4),
+                     (entityProperties.positionX - entityProperties.size,
+                      entityProperties.positionY - entityProperties.size),
+                     (entityProperties.positionX + entityProperties.size,
+                      entityProperties.positionY - entityProperties.size)]
+                )
+            elif skin == "Ruby":
+                entity = pygame.draw.polygon(
+                    gameScreen,
+                    entityProperties.entityColor,
+                    [(entityProperties.positionX, entityProperties.positionY + entityProperties.size),
+                     (entityProperties.positionX - entityProperties.size, entityProperties.positionY),
+                     (entityProperties.positionX, entityProperties.positionY - entityProperties.size),
+                     (entityProperties.positionX + entityProperties.size, entityProperties.positionY)],
+                )
+            elif skin == "Hexagon":
+                entity = pygame.draw.polygon(
+                    gameScreen,
+                    entityProperties.entityColor,
+                    [(entityProperties.positionX - entityProperties.size / 2,
+                      entityProperties.positionY + entityProperties.size / 1.15),
+                     (entityProperties.positionX + entityProperties.size / 2,
+                      entityProperties.positionY + entityProperties.size / 1.15),
+                     (entityProperties.positionX + entityProperties.size, entityProperties.positionY),
+                     (entityProperties.positionX + entityProperties.size / 2,
+                      entityProperties.positionY - entityProperties.size / 1.15),
+                     (entityProperties.positionX - entityProperties.size / 2,
+                      entityProperties.positionY - entityProperties.size / 1.15),
+                     (entityProperties.positionX - entityProperties.size, entityProperties.positionY),
+                     ]
+                )
 
         # Create spikes on the screen
         spikeRight = spikePropertiesR.createSpike(gameScreen)
