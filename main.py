@@ -286,7 +286,6 @@ while True:
                 entityProperties.setSize(entityProperties.size - 0.2)
                 entityProperties.setSpeed(0)
 
-        skin = "Hexagon"
         if entityProperties.size > 0:
             # DRAW ENTITY WITH SKIN
             if skin == "Circle":
@@ -342,8 +341,12 @@ while True:
                 )
 
         # Create spikes on the screen
-        spikeRight = spikePropertiesR.createSpike(gameScreen)
-        spikeLeft = spikePropertiesL.createSpike(gameScreen)
+        spikeRight = []
+        for i in range(5):
+            spikeRight.append(spikePropertiesR.createSpike(gameScreen))
+        spikeLeft = []
+        for i in range(5):
+            spikeLeft.append(spikePropertiesL.createSpike(gameScreen))
 
         # PHYSICS
         # Gravity
@@ -382,9 +385,11 @@ while True:
             gameOver = True
 
         # Spikes visible Collision with spike
-        if entity.colliderect(spikeRight):
-            gameOver = True
-        elif entity.colliderect(spikeLeft):
-            gameOver = True
+        for i in range(len(spikeRight)):
+            if entity.colliderect(spikeRight[i]):
+                gameOver = True
+        for i in range(len(spikeLeft)):
+            if entity.colliderect(spikeLeft[i]):
+                gameOver = True
 
     pygame.display.flip()

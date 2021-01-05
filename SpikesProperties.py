@@ -12,13 +12,13 @@ class LeftSpike:
     spikeColor = (colorR, colorG, colorB)
 
     width = 50
-    height = 30
+    height = screenProperties.height / 15
 
     positionX = 0
-    positionY = random.randrange(0, screenProperties.height - height)
+    positionY = random.randrange(0, 15) * (screenProperties.height / 15)
 
     def refreshPositionY(self):
-        self.positionY = random.randrange(0, screenProperties.height - self.height)
+        self.positionY = random.randrange(0, 15) * (screenProperties.height / 15)
 
     def setColorR(self, newColor):
         self.colorR = newColor
