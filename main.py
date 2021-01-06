@@ -75,6 +75,36 @@ textQuit = createText(quitProperties, 50, (255, 255, 255), "Quit")
 textQuit_rect = textQuit.get_rect(
     center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8 * 6))
 
+# CREDITS MENU
+authorProperties = TextProperties.Text()
+textAuthor = createText(authorProperties, 50, (58, 58, 64), "Author")
+textAuthor_rect = textAuthor.get_rect(
+    center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8)
+)
+
+authorMeProperties = TextProperties.Text()
+textAuthorMe = createText(authorMeProperties, 40, (255, 255, 255), "Dawid Kostka")
+textAuthorMe_rect = textAuthorMe.get_rect(
+    center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8 * 2)
+)
+
+gitHubProperties = TextProperties.Text()
+textGitHub = createText(gitHubProperties, 50, (58, 58, 64), "Github")
+textGitHub_rect = textGitHub.get_rect(
+    center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8 * 3)
+)
+
+myGitHubProperties = TextProperties.Text()
+textMyGitHub = createText(myGitHubProperties, 40, (255, 255, 255), "github com TheMissyy")
+textMyGitHub_rect = textMyGitHub.get_rect(
+    center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8 * 4)
+)
+
+backCreditsProperties = TextProperties.Text()
+textBackCredits = createText(backCreditsProperties, 40, (255, 255, 255), "Back to Lobby")
+textBackCredits_rect = textBackCredits.get_rect(
+    center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8 * 7))
+
 # GAME OVER MENU
 # Setting score value
 score = 0
@@ -172,7 +202,7 @@ while True:
         # Get Mouse potion
         # ####if not startMenuProperties.gameStart:
         if currentMenu == "Main Menu" or currentMenu == "Game Over" \
-           or currentMenu == "Credits" or currentMenu == "Options":
+                or currentMenu == "Credits" or currentMenu == "Options":
             mousePosition = pygame.mouse.get_pos()
 
         if currentMenu == "Main Menu":
@@ -206,8 +236,6 @@ while True:
                 # Check if player clicked Credits button Start if it do move to Credits menu
                 if event.type == pygame.MOUSEBUTTONUP:
                     currentMenu = "Credits"
-                    # TODO add credits menu with my name
-                    print("I should add credits")
             # If player didn't hover Credits button change it color to normal
             else:
                 textCredits = createText(creditsProperties, creditsProperties.size, (255, 255, 255), "Credits")
@@ -221,51 +249,65 @@ while True:
             # If player didn't hover Quit button change it color to normal
             else:
                 textQuit = createText(quitProperties, quitProperties.size, (255, 255, 255), "Quit")
+        elif currentMenu == "Credits":
+            # Back to lobby button in credits menu
+            if textBackCredits_rect.collidepoint(mousePosition):
+                textBackCredits = createText(backCreditsProperties, backCreditsProperties.size, (55, 55, 66),
+                                             "Back to lobby")
+                # Check if player clicked PLAY AGAIN button if it do move to Play again menu
+                if event.type == pygame.MOUSEBUTTONUP:
+                    currentMenu = "Main Menu"
+            # If player didn't hover PLAY AGAIN button change it color to normal
+            else:
+                textBackCredits = createText(backCreditsProperties, backCreditsProperties.size, (255, 255, 255),
+                                             "Back to lobby")
 
         # REFRESH GAME OVER BUTTONS
-        else:
+        elif currentMenu == "Game Over":
             # CHECK BUTTONS AFTER PLAYER LOST
-            if currentMenu == "Game Over":
-                # Check if player hover Play Again button if do, change color of button
-                if textPlayAgain_rect.collidepoint(mousePosition):
-                    textPlayAgain = createText(playAgainProperties, playAgainProperties.size, (55, 55, 66),
-                                               "Play Again")
-                    # Check if player clicked PLAY AGAIN button if it do move to Play again menu
-                    if event.type == pygame.MOUSEBUTTONUP:
-                        currentMenu = "Game"
-                        resetGame()
-                # If player didn't hover PLAY AGAIN button change it color to normal
-                else:
-                    textPlayAgain = createText(playAgainProperties, playAgainProperties.size, (255, 255, 255),
-                                               "Play Again")
+            # Check if player hover Play Again button if do, change color of button
+            if textPlayAgain_rect.collidepoint(mousePosition):
+                textPlayAgain = createText(playAgainProperties, playAgainProperties.size, (55, 55, 66),
+                                           "Play Again")
+                # Check if player clicked PLAY AGAIN button if it do move to Play again menu
+                if event.type == pygame.MOUSEBUTTONUP:
+                    currentMenu = "Game"
+                    resetGame()
+            # If player didn't hover PLAY AGAIN button change it color to normal
+            else:
+                textPlayAgain = createText(playAgainProperties, playAgainProperties.size, (255, 255, 255),
+                                           "Play Again")
 
-                # Check if player hover Options button if do, change color of button
-                if textOptionsOver_rect.collidepoint(mousePosition):
-                    textOptionsOver = createText(optionsOverProperties, optionsOverProperties.size, (58, 58, 64),
-                                                 "Options")
-                    # Check if player clicked PLAY AGAIN button if it do move to OPTIONS menu
-                    if event.type == pygame.MOUSEBUTTONUP:
-                        currentMenu = "Options"
-                        # TODO add options menu with skins
-                        print("I should add options")
-                # If player didn't hover OPTIONS button change it color to normal
-                else:
-                    textOptionsOver = createText(optionsOverProperties, optionsOverProperties.size, (255, 255, 255),
-                                                 "Options")
+            # Check if player hover Options button if do, change color of button
+            if textOptionsOver_rect.collidepoint(mousePosition):
+                textOptionsOver = createText(optionsOverProperties, optionsOverProperties.size, (58, 58, 64),
+                                             "Options")
+                # Check if player clicked PLAY AGAIN button if it do move to OPTIONS menu
+                if event.type == pygame.MOUSEBUTTONUP:
+                    currentMenu = "Options"
+                    # TODO add options menu with skins
+                    print("I should add options")
+            # If player didn't hover OPTIONS button change it color to normal
+            else:
+                textOptionsOver = createText(optionsOverProperties, optionsOverProperties.size, (255, 255, 255),
+                                             "Options")
 
-                # Check if player hover BACK TO LOBBY button if do, change color of button
-                if textBackLobby_rect.collidepoint(mousePosition):
-                    textBackLobby = createText(backLobbyProperties, backLobbyProperties.size, (58, 58, 64),
-                                               "Back to Lobby")
-                    # Check if player clicked BACK TO LOBBY button if it do move to Main Menu
-                    if event.type == pygame.MOUSEBUTTONUP:
-                        currentMenu = "Main Menu"
-                        resetGame()
-                        # Reset game start option
-                # If player didn't hover BACK TO LOBBY button change it color to normal
-                else:
-                    textBackLobby = createText(backLobbyProperties, backLobbyProperties.size, (255, 255, 255),
-                                               "Back to Lobby")
+            # Check if player hover BACK TO LOBBY button if do, change color of button
+            if textBackLobby_rect.collidepoint(mousePosition):
+                textBackLobby = createText(backLobbyProperties, backLobbyProperties.size, (58, 58, 64),
+                                           "Back to Lobby")
+                # Check if player clicked BACK TO LOBBY button if it do move to Main Menu
+                if event.type == pygame.MOUSEBUTTONUP:
+                    currentMenu = "Main Menu"
+                    startMenuProperties.setColors(gameMenuProperties.colorR,
+                                                  gameMenuProperties.colorG,
+                                                  gameMenuProperties.colorB)
+                    resetGame()
+                    # Reset game start option
+            # If player didn't hover BACK TO LOBBY button change it color to normal
+            else:
+                textBackLobby = createText(backLobbyProperties, backLobbyProperties.size, (255, 255, 255),
+                                           "Back to Lobby")
 
     # PLAYER IN MAIN MENU
     if currentMenu == "Main Menu":
@@ -398,7 +440,7 @@ while True:
                 entityProperties.setSize(entityProperties.size - 0.2)
                 entityProperties.setSpeed(0)
                 if entityProperties.alive:
-                    entityProperties.setGravity(entityProperties.defaultJumpHeight)
+                    entityProperties.setGravity(entityProperties.defaultJumpHeight / 3 * 2)
                 entityProperties.setAlive(False)
             else:
                 currentMenu = "Game Over"
@@ -428,7 +470,7 @@ while True:
                 # If player touch spike he don t have any option to move
                 entityProperties.setSpeed(0)
                 if entityProperties.alive:
-                    entityProperties.setGravity(entityProperties.defaultJumpHeight)
+                    entityProperties.setGravity(entityProperties.defaultJumpHeight / 3 * 2)
                 entityProperties.setAlive(False)
 
         for i in range(len(spikeLeft)):
@@ -436,11 +478,12 @@ while True:
                 # If player touch spike he don t have any option to move
                 entityProperties.setSpeed(0)
                 if entityProperties.alive:
-                    entityProperties.setGravity(entityProperties.defaultJumpHeight)
+                    entityProperties.setGravity(entityProperties.defaultJumpHeight / 3 * 2)
                 entityProperties.setAlive(False)
 
     # GAME OVER
     elif currentMenu == "Game Over":
+        gameScreen.fill(gameMenuProperties.screenColor)
         # Game over title
         gameScreen.blit(textGameOver, textGameOver_rect)
         gameScreen.blit(textPlayAgain, textPlayAgain_rect)
@@ -455,15 +498,23 @@ while True:
         # Draw your score title at game over screen
         gameScreen.blit(textScore, textScore_rect)
 
+    # CREDITS
+    elif currentMenu == "Credits":
+        startScreen.fill(startMenuProperties.screenColor)
+        # Author title
+        startScreen.blit(textAuthor, textAuthor_rect)
+        startScreen.blit(textAuthorMe, textAuthorMe_rect)
+        startScreen.blit(textGitHub, textGitHub_rect)
+        startScreen.blit(textMyGitHub, textMyGitHub_rect)
+        startScreen.blit(textBackCredits, textBackCredits_rect)
 
     # Gradient background in main menu
-    if currentMenu == "Main Menu":
-        if currentMenu != "Game Over":
-            if counter % 10 == 0:
-                startMenuProperties.dynamicColors(0)
-                startMenuProperties.refreshScreenColors()
-                counter = 1
-            else:
-                counter += 1
+    if currentMenu == "Main Menu" or currentMenu == "Credits" or currentMenu == "Options":
+        if counter % 15 == 0:
+            startMenuProperties.dynamicColors(0)
+            startMenuProperties.refreshScreenColors()
+            counter = 1
+        else:
+            counter += 1
 
     pygame.display.flip()
