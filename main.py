@@ -114,6 +114,35 @@ skin = "Ruby"
 changeScreenColor = 0
 # Variable for smooth gradient in Main Menu
 counter = 1
+# Declare mouse position
+mousePosition = (-100, -100)
+
+
+def resetGame():
+    global score, gameOver, spikePropertiesL, spikePropertiesR, entityProperties, textScore
+    score = 0
+    gameOver = False
+    # Reset spikes position
+    spikePropertiesL = SpikesProperties.LeftSpike()
+    spikePropertiesL.refreshPositionY()
+    spikePropertiesR = SpikesProperties.RightSpike()
+    # Reset entity position
+    entityProperties = EntitiesProperties.EntityCircle()
+    entityProperties.setPositionY(gameMenuProperties.height / 2)
+    entityProperties.setPositionX(gameMenuProperties.width / 2)
+    entityProperties.setSize(entityProperties.defaultSize)
+    entityProperties.setSpeed(entityProperties.defaultSpeed)
+    entityProperties.setGravity(entityProperties.defaultGravity)
+    # Reset score title position and color
+    scoreProperties.setColorType(1)
+    scoreProperties.setColors(15, 207, 23)
+    scoreProperties.refreshColor()
+    textScore = createText(scoreProperties, 100, scoreProperties.textColor, str(score))
+    # Reset background color
+    gameMenuProperties.setColorType(1)
+    gameMenuProperties.setColors(45, 237, 53)
+    gameMenuProperties.refreshScreenColors()
+
 
 while True:
     for event in pygame.event.get():
@@ -137,7 +166,10 @@ while True:
         # If mouse collides with button it glows
 
         # Get Mouse potion
-        mousePosition = pygame.mouse.get_pos()
+        if not startMenuProperties.gameStart:
+            mousePosition = pygame.mouse.get_pos()
+        if gameOver:
+            mousePosition = pygame.mouse.get_pos()
 
         # REFRESH START MAIN MENU
         if not startMenuProperties.gameStart:
@@ -195,28 +227,7 @@ while True:
                                                "Play Again")
                     # Check if player clicked PLAY AGAIN button if it do move to Play again menu
                     if event.type == pygame.MOUSEBUTTONUP:
-                        score = 0
-                        gameOver = False
-                        # Reset spikes position
-                        spikePropertiesL = SpikesProperties.LeftSpike()
-                        spikePropertiesL.refreshPositionY()
-                        spikePropertiesR = SpikesProperties.RightSpike()
-                        # Reset entity position
-                        entityProperties = EntitiesProperties.EntityCircle()
-                        entityProperties.setPositionY(gameMenuProperties.height / 2)
-                        entityProperties.setPositionX(gameMenuProperties.width / 2)
-                        entityProperties.setSize(entityProperties.defaultSize)
-                        entityProperties.setSpeed(entityProperties.defaultSpeed)
-                        entityProperties.setGravity(entityProperties.defaultGravity)
-                        # Reset score title position and color
-                        scoreProperties.setColorType(1)
-                        scoreProperties.setColors(15, 207, 23)
-                        scoreProperties.refreshColor()
-                        textScore = createText(scoreProperties, 100, scoreProperties.textColor, str(score))
-                        # Reset background color
-                        gameMenuProperties.setColorType(1)
-                        gameMenuProperties.setColors(45, 237, 53)
-                        gameMenuProperties.refreshScreenColors()
+                        resetGame()
                 # If player didn't hover PLAY AGAIN button change it color to normal
                 else:
                     textPlayAgain = createText(playAgainProperties, playAgainProperties.size, (255, 255, 255),
@@ -241,28 +252,7 @@ while True:
                                                "Back to Lobby")
                     # Check if player clicked BACK TO LOBBY button if it do move to Main Menu
                     if event.type == pygame.MOUSEBUTTONUP:
-                        score = 0
-                        gameOver = False
-                        # Reset spikes position
-                        spikePropertiesL = SpikesProperties.LeftSpike()
-                        spikePropertiesL.refreshPositionY()
-                        spikePropertiesR = SpikesProperties.RightSpike()
-                        # Reset entity position
-                        entityProperties = EntitiesProperties.EntityCircle()
-                        entityProperties.setPositionY(gameMenuProperties.height / 2)
-                        entityProperties.setPositionX(gameMenuProperties.width / 2)
-                        entityProperties.setSize(entityProperties.defaultSize)
-                        entityProperties.setSpeed(entityProperties.defaultSpeed)
-                        entityProperties.setGravity(entityProperties.defaultGravity)
-                        # Reset score title position and color
-                        scoreProperties.setColorType(1)
-                        scoreProperties.setColors(15, 207, 23)
-                        scoreProperties.refreshColor()
-                        textScore = createText(scoreProperties, 100, scoreProperties.textColor, str(score))
-                        # Reset background color
-                        gameMenuProperties.setColorType(1)
-                        gameMenuProperties.setColors(45, 237, 53)
-                        gameMenuProperties.refreshScreenColors()
+                        resetGame()
                         # Reset game start option
                         startMenuProperties.setGameStart(False)
                 # If player didn't hover BACK TO LOBBY button change it color to normal
@@ -324,6 +314,7 @@ while True:
         if entityProperties.size > 0:
             # DRAW ENTITY WITH SKIN
             if skin == "Circle":
+
                 entity = pygame.draw.circle(
                     gameScreen,
                     entityProperties.entityColor,
@@ -402,9 +393,9 @@ while True:
                     # If ball touch right side change bounce direction
                     if entityProperties.positionX + entityProperties.size >= gameMenuProperties.width:
                         entityProperties.setBounce(False)
-                        score += 5
+                        score += 1
                         # Change screen color after bounce
-                        if score % 5 == 0:
+                        if score % 5 == 0 and score != 0:
                             changeScreenColor = 100
                         # Change position of left spike
                         spikePropertiesL.refreshPositionY()
@@ -414,9 +405,9 @@ while True:
                     # If ball touch left side change bounce direction
                     if entityProperties.positionX <= 0 + entityProperties.size:
                         entityProperties.setBounce(True)
-                        score += 5
+                        score += 1
                         # Change screen color after bounce
-                        if score % 5 == 0:
+                        if score % 5 == 0 and score != 0:
                             changeScreenColor = 100
                         # Change position of right spike
                         spikePropertiesR.refreshPositionY()
@@ -437,6 +428,7 @@ while True:
             changeScreenColor -= 1
 
         # Spikes visible Collision with spike
+        # TODO add more spikes
         for i in range(len(spikeRight)):
             if entity.colliderect(spikeRight[i]):
                 gameOver = True
@@ -446,11 +438,12 @@ while True:
 
     # Gradient background in main menu
     if not startMenuProperties.gameStart:
-        if counter % 10 == 0:
-            startMenuProperties.dynamicColors(0)
-            startMenuProperties.refreshScreenColors()
-            counter = 1
-        else:
-            counter += 1
+        if not gameOver:
+            if counter % 10 == 0:
+                startMenuProperties.dynamicColors(0)
+                startMenuProperties.refreshScreenColors()
+                counter = 1
+            else:
+                counter += 1
 
     pygame.display.flip()

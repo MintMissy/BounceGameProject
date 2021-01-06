@@ -36,7 +36,7 @@ class Text:
     def setColorB(self, newColor):
         self.colorB = newColor
 
-    def dynamicColors(self , colorMultiplier):
+    def dynamicColors(self, colorMultiplier):
         if self.colorType == 0:
             if self.colorR == 45 - colorMultiplier:
                 self.colorType = 1
