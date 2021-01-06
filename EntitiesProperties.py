@@ -15,12 +15,15 @@ class EntityVector:
     gravitySpeed = 0.2
     defaultGravity = 0.2
     defaultJumpHeight = -0.6
+    alive = True
 
     positionX = screenProperties.getCenterX()
     positionY = screenProperties.getCenterY()
 
     bounceRight = True
 
+    def setAlive(self, newAlive):
+        self.alive = newAlive
     def setSpeed(self, newSpeed):
         self.speed = newSpeed
 

@@ -110,11 +110,15 @@ textBackLobby_rect = textBackLobby.get_rect(
 
 # Current skin of entity
 skin = "Ruby"
-# Check if screen should change color in next tick
+
+# Current menu variable options: Main Menu, Game, Options, Credits
+currentMenu = "Main Menu"
+# Check if screen should change main menu color in next tick
 changeScreenColor = 0
 # Variable for smooth gradient in Main Menu
 counter = 1
-# Declare mouse position
+
+# Declare mouse position to make it global
 mousePosition = (-100, -100)
 
 
@@ -154,25 +158,24 @@ while True:
         # Check if player use space to jump ball
         if event.type == pygame.KEYDOWN:
             # Checking keyboard and mouse in game
-            if startMenuProperties.gameStart and not gameOver:
+            if currentMenu == "Game" and entityProperties.alive:
                 if event.key == pygame.K_SPACE:
                     entityProperties.setGravity(entityProperties.defaultJumpHeight)
         # Check if player use LMB to jump ball
         if event.type == pygame.MOUSEBUTTONUP:
-            if startMenuProperties.gameStart and not gameOver:
+            if currentMenu == "Game" and entityProperties.alive:
                 entityProperties.setGravity(entityProperties.defaultJumpHeight)
 
         # BUTTON GLOW
         # If mouse collides with button it glows
 
         # Get Mouse potion
-        if not startMenuProperties.gameStart:
-            mousePosition = pygame.mouse.get_pos()
-        if gameOver:
+        # ####if not startMenuProperties.gameStart:
+        if currentMenu == "Main Menu" or currentMenu == "Game Over" \
+           or currentMenu == "Credits" or currentMenu == "Options":
             mousePosition = pygame.mouse.get_pos()
 
-        # REFRESH START MAIN MENU
-        if not startMenuProperties.gameStart:
+        if currentMenu == "Main Menu":
             startMenuProperties.dynamicColors(0)
             startMenuProperties.refreshScreenColors()
             # Check if player hover Start Game button if do, change color of button
@@ -180,7 +183,7 @@ while True:
                 textStartGame = createText(startGameProperties, startGameProperties.size, (55, 55, 66), "Start")
                 # Check if player clicked Start Game button Start if it do start game
                 if event.type == pygame.MOUSEBUTTONUP:
-                    startMenuProperties.setGameStart(True)
+                    currentMenu = "Game"
             # If player didn't hover Start Game change it color to normal
             else:
                 textStartGame = createText(startGameProperties, startGameProperties.size, (255, 255, 255), "Start")
@@ -191,6 +194,7 @@ while True:
                 # Check if player clicked Options button Start if it do move to options menu
                 if event.type == pygame.MOUSEBUTTONUP:
                     # TODO add options menu with skins
+                    currentMenu = "Options"
                     print("I should add options")
             # If player didn't hover Options button change it color to normal
             else:
@@ -201,6 +205,7 @@ while True:
                 textCredits = createText(creditsProperties, creditsProperties.size, (55, 55, 66), "Credits")
                 # Check if player clicked Credits button Start if it do move to Credits menu
                 if event.type == pygame.MOUSEBUTTONUP:
+                    currentMenu = "Credits"
                     # TODO add credits menu with my name
                     print("I should add credits")
             # If player didn't hover Credits button change it color to normal
@@ -220,13 +225,14 @@ while True:
         # REFRESH GAME OVER BUTTONS
         else:
             # CHECK BUTTONS AFTER PLAYER LOST
-            if gameOver:
+            if currentMenu == "Game Over":
                 # Check if player hover Play Again button if do, change color of button
                 if textPlayAgain_rect.collidepoint(mousePosition):
                     textPlayAgain = createText(playAgainProperties, playAgainProperties.size, (55, 55, 66),
                                                "Play Again")
                     # Check if player clicked PLAY AGAIN button if it do move to Play again menu
                     if event.type == pygame.MOUSEBUTTONUP:
+                        currentMenu = "Game"
                         resetGame()
                 # If player didn't hover PLAY AGAIN button change it color to normal
                 else:
@@ -239,6 +245,7 @@ while True:
                                                  "Options")
                     # Check if player clicked PLAY AGAIN button if it do move to OPTIONS menu
                     if event.type == pygame.MOUSEBUTTONUP:
+                        currentMenu = "Options"
                         # TODO add options menu with skins
                         print("I should add options")
                 # If player didn't hover OPTIONS button change it color to normal
@@ -252,16 +259,16 @@ while True:
                                                "Back to Lobby")
                     # Check if player clicked BACK TO LOBBY button if it do move to Main Menu
                     if event.type == pygame.MOUSEBUTTONUP:
+                        currentMenu = "Main Menu"
                         resetGame()
                         # Reset game start option
-                        startMenuProperties.setGameStart(False)
                 # If player didn't hover BACK TO LOBBY button change it color to normal
                 else:
                     textBackLobby = createText(backLobbyProperties, backLobbyProperties.size, (255, 255, 255),
                                                "Back to Lobby")
 
     # PLAYER IN MAIN MENU
-    if not startMenuProperties.gameStart:
+    if currentMenu == "Main Menu":
         # Clear every frame
         gameScreen.fill(startMenuProperties.screenColor)
 
@@ -273,13 +280,13 @@ while True:
         gameScreen.blit(textQuit, textQuit_rect)
 
     # PLAYER IN GAME
-    else:
+    elif currentMenu == "Game":
         # Clear every frame
         gameScreen.fill(gameMenuProperties.screenColor)
 
         # SHOW SCORE AT SCREEN
         # SHOW SCORE AT SCREEN
-        if not gameOver:
+        if currentMenu == "Game":
             # If score is 10/100/1000 center it
             if score == 10 or 100 or 1000:
                 textScore_rect = textScore.get_rect(
@@ -290,26 +297,6 @@ while True:
             textScore = createText(scoreProperties, scoreProperties.size, scoreProperties.textColor, str(score))
             # Draw score at screen
             gameScreen.blit(textScore, textScore_rect)
-
-        # GAME OVER
-        if gameOver:
-            # Game over title
-            gameScreen.blit(textGameOver, textGameOver_rect)
-            gameScreen.blit(textPlayAgain, textPlayAgain_rect)
-            gameScreen.blit(textOptionsOver, textOptionsOver_rect)
-            gameScreen.blit(textBackLobby, textBackLobby_rect)
-
-            # Refresh your score title
-            textScore_rect = textScore.get_rect(
-                center=(
-                    gameMenuProperties.getCenterX(), gameMenuProperties.getCenterY() - gameMenuProperties.width / 10))
-            textScore = createText(scoreProperties, 40, (255, 255, 255), ("Your score " + str(score)))
-            # Draw your score title at game over screen
-            gameScreen.blit(textScore, textScore_rect)
-            # Smoothly change size of entity to 0 if it died
-            if entityProperties.size > 0:
-                entityProperties.setSize(entityProperties.size - 0.2)
-                entityProperties.setSpeed(0)
 
         if entityProperties.size > 0:
             # DRAW ENTITY WITH SKIN
@@ -365,15 +352,6 @@ while True:
                      (entityProperties.positionX - entityProperties.size, entityProperties.positionY),
                      ]
                 )
-
-        # Create spikes on the screen
-        spikeRight = []
-        for i in range(5):
-            spikeRight.append(spikePropertiesR.createSpike(gameScreen))
-        spikeLeft = []
-        for i in range(5):
-            spikeLeft.append(spikePropertiesL.createSpike(gameScreen))
-
         # PHYSICS
         # Gravity
         if entityProperties.positionY + entityProperties.size < gameMenuProperties.height:
@@ -415,7 +393,15 @@ while True:
                     entityProperties.setPositionX(entityProperties.positionX - entityProperties.speed)
 
         else:
-            gameOver = True
+            # Smoothly change size of entity to 0 if it died
+            if entityProperties.size > 0:
+                entityProperties.setSize(entityProperties.size - 0.2)
+                entityProperties.setSpeed(0)
+                if entityProperties.alive:
+                    entityProperties.setGravity(entityProperties.defaultJumpHeight)
+                entityProperties.setAlive(False)
+            else:
+                currentMenu = "Game Over"
 
         # Changing color of the screen after player hit 5 points
         if changeScreenColor > 0:
@@ -427,18 +413,52 @@ while True:
 
             changeScreenColor -= 1
 
+        # Create spikes on the screen
+        spikeRight = []
+        for i in range(5):
+            spikeRight.append(spikePropertiesR.createSpike(gameScreen))
+        spikeLeft = []
+        for i in range(5):
+            spikeLeft.append(spikePropertiesL.createSpike(gameScreen))
+
         # Spikes visible Collision with spike
         # TODO add more spikes
         for i in range(len(spikeRight)):
             if entity.colliderect(spikeRight[i]):
-                gameOver = True
+                # If player touch spike he don t have any option to move
+                entityProperties.setSpeed(0)
+                if entityProperties.alive:
+                    entityProperties.setGravity(entityProperties.defaultJumpHeight)
+                entityProperties.setAlive(False)
+
         for i in range(len(spikeLeft)):
             if entity.colliderect(spikeLeft[i]):
-                gameOver = True
+                # If player touch spike he don t have any option to move
+                entityProperties.setSpeed(0)
+                if entityProperties.alive:
+                    entityProperties.setGravity(entityProperties.defaultJumpHeight)
+                entityProperties.setAlive(False)
+
+    # GAME OVER
+    elif currentMenu == "Game Over":
+        # Game over title
+        gameScreen.blit(textGameOver, textGameOver_rect)
+        gameScreen.blit(textPlayAgain, textPlayAgain_rect)
+        gameScreen.blit(textOptionsOver, textOptionsOver_rect)
+        gameScreen.blit(textBackLobby, textBackLobby_rect)
+
+        # Refresh your score title
+        textScore_rect = textScore.get_rect(
+            center=(
+                gameMenuProperties.getCenterX(), gameMenuProperties.getCenterY() - gameMenuProperties.width / 10))
+        textScore = createText(scoreProperties, 40, (255, 255, 255), ("Your score " + str(score)))
+        # Draw your score title at game over screen
+        gameScreen.blit(textScore, textScore_rect)
+
 
     # Gradient background in main menu
-    if not startMenuProperties.gameStart:
-        if not gameOver:
+    if currentMenu == "Main Menu":
+        if currentMenu != "Game Over":
             if counter % 10 == 0:
                 startMenuProperties.dynamicColors(0)
                 startMenuProperties.refreshScreenColors()
