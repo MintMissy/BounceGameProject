@@ -9,7 +9,7 @@ from Menus import StartMenuProperties
 pygame.init()
 
 # Initiation of the window
-pygame.display.set_caption("My game in Py game")
+pygame.display.set_caption("<> Bounce Game <>")
 # Setting an icon of program
 programIcon = pygame.image.load('Graphics/ProgramIcon.png')
 pygame.display.set_icon(programIcon)
@@ -75,6 +75,42 @@ textQuit = createText(quitProperties, 50, (255, 255, 255), "Quit")
 textQuit_rect = textQuit.get_rect(
     center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8 * 6))
 
+# OPTIONS MENU
+backOptionsProperties = TextProperties.Text()
+textBackOptions = createText(backOptionsProperties, 40, (255, 255, 255), "Back to lobby")
+textBackOptions_rect = textBackOptions.get_rect(
+    center=(startMenuProperties.getCenterX(), startMenuProperties.height / 8 * 7))
+
+# Select skin option
+selectOptionsProperties = TextProperties.Text()
+textSelectOptions = createText(selectOptionsProperties, 25, (255, 255, 255), "Select")
+textSelectOptions_rect = textSelectOptions.get_rect(
+    center=(startMenuProperties.width / 3, startMenuProperties.height / 8 * 2.5))
+
+# Select skin option 2
+selectOptionsProperties_2 = TextProperties.Text()
+textSelectOptions_2 = createText(selectOptionsProperties_2, 25, (255, 255, 255), "Select")
+textSelectOptions_2_rect = textSelectOptions_2.get_rect(
+    center=(startMenuProperties.width / 3 * 2, startMenuProperties.height / 8 * 2.5))
+
+# Select skin option 3
+selectOptionsProperties_3 = TextProperties.Text()
+textSelectOptions_3 = createText(selectOptionsProperties_3, 25, (255, 255, 255), "Select")
+textSelectOptions_3_rect = textSelectOptions_3.get_rect(
+    center=(startMenuProperties.width / 5 * 1, startMenuProperties.height / 8 * 5.5))
+
+# Select skin option 4
+selectOptionsProperties_4 = TextProperties.Text()
+textSelectOptions_4 = createText(selectOptionsProperties_4, 25, (255, 255, 255), "Select")
+textSelectOptions_4_rect = textSelectOptions_4.get_rect(
+    center=(startMenuProperties.width / 5 * 2.5, startMenuProperties.height / 8 * 5.5))
+
+# Select skin option 5
+selectOptionsProperties_5 = TextProperties.Text()
+textSelectOptions_5 = createText(selectOptionsProperties_5, 25, (255, 255, 255), "Select")
+textSelectOptions_5_rect = textSelectOptions_5.get_rect(
+    center=(startMenuProperties.width / 5 * 4, startMenuProperties.height / 8 * 5.5))
+
 # CREDITS MENU
 authorProperties = TextProperties.Text()
 textAuthor = createText(authorProperties, 50, (58, 58, 64), "Author")
@@ -139,7 +175,7 @@ textBackLobby_rect = textBackLobby.get_rect(
     center=(gameMenuProperties.getCenterX(), gameMenuProperties.getCenterY() + gameMenuProperties.width / 40 * 7))
 
 # Current skin of entity
-skin = "Ruby"
+skin = "Circle"
 
 # Current menu variable options: Main Menu, Game, Options, Credits
 currentMenu = "Main Menu"
@@ -223,9 +259,7 @@ while True:
                 textOptions = createText(optionsProperties, optionsProperties.size, (55, 55, 66), "Options")
                 # Check if player clicked Options button Start if it do move to options menu
                 if event.type == pygame.MOUSEBUTTONUP:
-                    # TODO add options menu with skins
                     currentMenu = "Options"
-                    print("I should add options")
             # If player didn't hover Options button change it color to normal
             else:
                 textOptions = createText(optionsProperties, optionsProperties.size, (255, 255, 255), "Options")
@@ -249,6 +283,91 @@ while True:
             # If player didn't hover Quit button change it color to normal
             else:
                 textQuit = createText(quitProperties, quitProperties.size, (255, 255, 255), "Quit")
+
+        # Options menu
+        elif currentMenu == "Options":
+
+            # Back to lobby button in options menu
+            if textBackOptions_rect.collidepoint(mousePosition):
+                textBackOptions = createText(backOptionsProperties, backOptionsProperties.size, (55, 55, 66),
+                                             "Back to lobby")
+                # Check if player clicked PLAY AGAIN button if it do move to Play again menu
+                if event.type == pygame.MOUSEBUTTONUP:
+                    currentMenu = "Main Menu"
+            # If player didn't hover PLAY AGAIN button change it color to normal
+            else:
+                textBackOptions = createText(backOptionsProperties, backOptionsProperties.size, (255, 255, 255),
+                                             "Back to lobby")
+
+            # Select button in options menu
+            if textSelectOptions_rect.collidepoint(mousePosition):
+                textSelectOptions = createText(selectOptionsProperties, selectOptionsProperties.size, (55, 55, 66),
+                                               "Select")
+                # Check if player clicked Select button if it do player skin changes
+                if event.type == pygame.MOUSEBUTTONUP:
+                    skin = "Circle"
+            # If player didn't hover Select button change it color to normal
+            else:
+                textSelectOptions = createText(selectOptionsProperties, selectOptionsProperties.size, (255, 255, 255),
+                                               "Select")
+
+            # Select 2 button in options menu
+            if textSelectOptions_2_rect.collidepoint(mousePosition):
+                textSelectOptions_2 = createText(selectOptionsProperties_2, selectOptionsProperties_2.size,
+                                                 (55, 55, 66),
+                                                 "Select")
+                # Check if player clicked Select button if it do player skin changes
+                if event.type == pygame.MOUSEBUTTONUP:
+                    skin = "Triangle"
+            # If player didn't hover Select button change it color to normal
+            else:
+                textSelectOptions_2 = createText(selectOptionsProperties_2, selectOptionsProperties_2.size,
+                                                 (255, 255, 255),
+                                                 "Select")
+
+            # Select 3 button in options menu
+            if textSelectOptions_3_rect.collidepoint(mousePosition):
+                textSelectOptions_3 = createText(selectOptionsProperties_3, selectOptionsProperties_3.size,
+                                                 (55, 55, 66),
+                                                 "Select")
+                # Check if player clicked Select button if it do player skin changes
+                if event.type == pygame.MOUSEBUTTONUP:
+                    skin = "Square"
+            # If player didn't hover Select button change it color to normal
+            else:
+                textSelectOptions_3 = createText(selectOptionsProperties_3, selectOptionsProperties_3.size,
+                                                 (255, 255, 255),
+                                                 "Select")
+
+            # Select 4 button in options menu
+            if textSelectOptions_4_rect.collidepoint(mousePosition):
+                textSelectOptions_4 = createText(selectOptionsProperties_4, selectOptionsProperties_4.size,
+                                                 (55, 55, 66),
+                                                 "Select")
+                # Check if player clicked Select button if it do player skin changes
+                if event.type == pygame.MOUSEBUTTONUP:
+                    skin = "Ruby"
+            # If player didn't hover Select button change it color to normal
+            else:
+                textSelectOptions_4 = createText(selectOptionsProperties_4, selectOptionsProperties_4.size,
+                                                 (255, 255, 255),
+                                                 "Select")
+
+            # Select 5 button in options menu
+            if textSelectOptions_5_rect.collidepoint(mousePosition):
+                textSelectOptions_5 = createText(selectOptionsProperties_5, selectOptionsProperties_5.size,
+                                                 (55, 55, 66),
+                                                 "Select")
+                # Check if player clicked Select button if it do player skin changes
+                if event.type == pygame.MOUSEBUTTONUP:
+                    skin = "Hexagon"
+            # If player didn't hover Select button change it color to normal
+            else:
+                textSelectOptions_5 = createText(selectOptionsProperties_5, selectOptionsProperties_5.size,
+                                                 (255, 255, 255),
+                                                 "Select")
+
+        # Credits menu
         elif currentMenu == "Credits":
             # Back to lobby button in credits menu
             if textBackCredits_rect.collidepoint(mousePosition):
@@ -285,8 +404,6 @@ while True:
                 # Check if player clicked PLAY AGAIN button if it do move to OPTIONS menu
                 if event.type == pygame.MOUSEBUTTONUP:
                     currentMenu = "Options"
-                    # TODO add options menu with skins
-                    print("I should add options")
             # If player didn't hover OPTIONS button change it color to normal
             else:
                 textOptionsOver = createText(optionsOverProperties, optionsOverProperties.size, (255, 255, 255),
@@ -308,8 +425,6 @@ while True:
             else:
                 textBackLobby = createText(backLobbyProperties, backLobbyProperties.size, (255, 255, 255),
                                            "Back to Lobby")
-
-    # PLAYER IN MAIN MENU
     if currentMenu == "Main Menu":
         # Clear every frame
         gameScreen.fill(startMenuProperties.screenColor)
@@ -320,13 +435,87 @@ while True:
         gameScreen.blit(textOptions, textOptions_rect)
         gameScreen.blit(textCredits, textCredits_rect)
         gameScreen.blit(textQuit, textQuit_rect)
+    # OPTIONS
+    elif currentMenu == "Options":
+        gameScreen.fill(startMenuProperties.screenColor)
+        # Skins title
+        gameScreen.blit(textBackOptions, textBackOptions_rect)
+        # Circle select option
+        pygame.draw.circle(
+            gameScreen,
+            (255, 255, 255),
+            (startMenuProperties.width / 3, startMenuProperties.height / 8 * 1.5),
+            startMenuProperties.width / 20)
+        gameScreen.blit(textSelectOptions, textSelectOptions_rect)
+
+        # Triangle select option
+        pygame.draw.polygon(
+            gameScreen,
+            (255, 255, 255),
+            [(startMenuProperties.width / 3 * 2, startMenuProperties.height / 8 * 2),
+             (startMenuProperties.width / 3 * 2 - startMenuProperties.width / 20,
+              startMenuProperties.height / 8 * 1.5 - startMenuProperties.width / 20),
+             (startMenuProperties.width / 3 * 2 + startMenuProperties.width / 20,
+              startMenuProperties.height / 8 * 1.5 - startMenuProperties.width / 20)]
+        )
+        gameScreen.blit(textSelectOptions_2, textSelectOptions_2_rect)
+
+        # Square select option
+        pygame.draw.rect(
+            gameScreen,
+            entityProperties.entityColor,
+            [startMenuProperties.width / 5 - startMenuProperties.width / 20,
+             startMenuProperties.height / 8 * 4.5 - startMenuProperties.width / 20,
+             startMenuProperties.width / 20 * 2,
+             startMenuProperties.width / 20 * 2
+             ]
+        )
+        gameScreen.blit(textSelectOptions_3, textSelectOptions_3_rect)
+
+        # Ruby select option
+        pygame.draw.polygon(
+            gameScreen,
+            entityProperties.entityColor,
+            [(startMenuProperties.width / 5 * 2.5, startMenuProperties.height / 8 * 4.5 + startMenuProperties.width / 20),
+             (startMenuProperties.width / 5 * 2.5 - startMenuProperties.width / 20, startMenuProperties.height / 8 * 4.5),
+             (startMenuProperties.width / 5 * 2.5, startMenuProperties.height / 8 * 4.5 - startMenuProperties.width / 20),
+             (startMenuProperties.width / 5 * 2.5 + startMenuProperties.width / 20, startMenuProperties.height / 8 * 4.5)],
+        )
+        gameScreen.blit(textSelectOptions_4, textSelectOptions_4_rect)
+
+        # Hexagon select option
+        pygame.draw.polygon(
+            gameScreen,
+            entityProperties.entityColor,
+            [(startMenuProperties.width / 5 * 4 - startMenuProperties.width / 20 / 2,
+              startMenuProperties.height / 8 * 4.5 + startMenuProperties.width / 20 / 1.15),
+             (startMenuProperties.width / 5 * 4 + startMenuProperties.width / 20 / 2,
+              startMenuProperties.height / 8 * 4.5 + startMenuProperties.width / 20 / 1.15),
+             (startMenuProperties.width / 5 * 4 + startMenuProperties.width / 20, startMenuProperties.height / 8 * 4.5),
+             (startMenuProperties.width / 5 * 4 + startMenuProperties.width / 20 / 2,
+              startMenuProperties.height / 8 * 4.5 - startMenuProperties.width / 20 / 1.15),
+             (startMenuProperties.width / 5 * 4 - startMenuProperties.width / 20 / 2,
+              startMenuProperties.height / 8 * 4.5 - startMenuProperties.width / 20 / 1.15),
+             (startMenuProperties.width / 5 * 4 - startMenuProperties.width / 20, startMenuProperties.height / 8 * 4.5),
+             ]
+        )
+        gameScreen.blit(textSelectOptions_5, textSelectOptions_5_rect)
+
+    # CREDITS
+    elif currentMenu == "Credits":
+        startScreen.fill(startMenuProperties.screenColor)
+        # Author title
+        startScreen.blit(textAuthor, textAuthor_rect)
+        startScreen.blit(textAuthorMe, textAuthorMe_rect)
+        startScreen.blit(textGitHub, textGitHub_rect)
+        startScreen.blit(textMyGitHub, textMyGitHub_rect)
+        startScreen.blit(textBackCredits, textBackCredits_rect)
 
     # PLAYER IN GAME
     elif currentMenu == "Game":
         # Clear every frame
         gameScreen.fill(gameMenuProperties.screenColor)
 
-        # SHOW SCORE AT SCREEN
         # SHOW SCORE AT SCREEN
         if currentMenu == "Game":
             # If score is 10/100/1000 center it
@@ -415,7 +604,7 @@ while True:
                         entityProperties.setBounce(False)
                         score += 1
                         # Change screen color after bounce
-                        if score % 5 == 0 and score != 0:
+                        if score % 3 == 0 and score != 0:
                             changeScreenColor = 100
                         # Change position of left spike
                         spikePropertiesL.refreshPositionY()
@@ -427,7 +616,7 @@ while True:
                         entityProperties.setBounce(True)
                         score += 1
                         # Change screen color after bounce
-                        if score % 5 == 0 and score != 0:
+                        if score % 3 == 0 and score != 0:
                             changeScreenColor = 100
                         # Change position of right spike
                         spikePropertiesR.refreshPositionY()
@@ -455,7 +644,7 @@ while True:
 
             changeScreenColor -= 1
 
-        # Create spikes on the screen
+        # TODO Create more spikes with each level on the screen
         spikeRight = []
         for i in range(5):
             spikeRight.append(spikePropertiesR.createSpike(gameScreen))
@@ -498,16 +687,7 @@ while True:
         # Draw your score title at game over screen
         gameScreen.blit(textScore, textScore_rect)
 
-    # CREDITS
-    elif currentMenu == "Credits":
-        startScreen.fill(startMenuProperties.screenColor)
-        # Author title
-        startScreen.blit(textAuthor, textAuthor_rect)
-        startScreen.blit(textAuthorMe, textAuthorMe_rect)
-        startScreen.blit(textGitHub, textGitHub_rect)
-        startScreen.blit(textMyGitHub, textMyGitHub_rect)
-        startScreen.blit(textBackCredits, textBackCredits_rect)
-
+    # PLAYER IN MENUS
     # Gradient background in main menu
     if currentMenu == "Main Menu" or currentMenu == "Credits" or currentMenu == "Options":
         if counter % 15 == 0:
