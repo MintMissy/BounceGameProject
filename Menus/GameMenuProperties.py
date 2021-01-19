@@ -6,6 +6,3 @@ class GameMenuProperties(MenuProperties.MenuProperties):
     colorR = 45
     colorG = 237
     colorB = 53
-
-
-

@@ -27,7 +27,7 @@ spikePropertiesL.refreshPositionY()
 # Create instance of right spikes properties
 spikePropertiesR = SpikesProperties.RightSpike()
 # Create entity at the middle of the screen
-entityProperties = EntitiesProperties.EntityCircle()
+entityProperties = EntitiesProperties.EntityVector()
 
 
 # Method that creates text
@@ -176,6 +176,12 @@ textBackLobby_rect = textBackLobby.get_rect(
 
 # Current skin of entity
 skin = "Circle"
+# Creating entity for skin circle
+entity = pygame.draw.circle(
+    gameScreen,
+    entityProperties.entityColor,
+    (entityProperties.positionX, entityProperties.positionY),
+    entityProperties.size)
 
 # Current menu variable options: Main Menu, Game, Options, Credits
 currentMenu = "Main Menu"
@@ -200,7 +206,7 @@ def resetGame():
     spikePropertiesL.refreshPositionY()
     spikePropertiesR = SpikesProperties.RightSpike()
     # Reset entity position
-    entityProperties = EntitiesProperties.EntityCircle()
+    entityProperties = EntitiesProperties.EntityVector()
     entityProperties.setPositionY(gameMenuProperties.height / 2)
     entityProperties.setPositionX(gameMenuProperties.width / 2)
     entityProperties.setSize(entityProperties.defaultSize)
