@@ -10,11 +10,11 @@ class EntityVector:
 
     defaultSize = 30
     size = 30
-    speed = 0.5
-    defaultSpeed = 0.5
-    gravitySpeed = 0.2
-    defaultGravity = 0.2
-    defaultJumpHeight = -0.6
+    speed = screenProperties.width / 110
+    defaultSpeed = screenProperties.width / 110
+    gravitySpeed = screenProperties.height / 230
+    defaultGravity = screenProperties.height / 230
+    defaultJumpHeight = -screenProperties.height / 65
     alive = True
 
     positionX = screenProperties.getCenterX()
@@ -24,6 +24,7 @@ class EntityVector:
 
     def setAlive(self, newAlive):
         self.alive = newAlive
+
     def setSpeed(self, newSpeed):
         self.speed = newSpeed
 

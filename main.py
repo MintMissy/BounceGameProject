@@ -187,6 +187,9 @@ counter = 1
 # Declare mouse position to make it global
 mousePosition = (-100, -100)
 
+spikesRight = []
+spikesLeft = []
+
 
 def resetGame():
     global score, gameOver, spikePropertiesL, spikePropertiesR, entityProperties, textScore
@@ -214,7 +217,11 @@ def resetGame():
     gameMenuProperties.refreshScreenColors()
 
 
+# clock variable to limit fps in code
+clock = pygame.time.Clock()
+
 while True:
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -234,13 +241,11 @@ while True:
         # BUTTON GLOW
         # If mouse collides with button it glows
 
-        # Get Mouse potion
         if currentMenu != "Game":
+            # Get Mouse potion
             mousePosition = pygame.mouse.get_pos()
 
             if currentMenu == "Main Menu":
-                startMenuProperties.dynamicColors(0)
-                startMenuProperties.refreshScreenColors()
                 # Check if player hover Start Game button if do, change color of button
                 if textStartGame_rect.collidepoint(mousePosition):
                     textStartGame = createText(startGameProperties, startGameProperties.size, (55, 55, 66), "Start")
@@ -423,107 +428,113 @@ while True:
                 else:
                     textBackLobby = createText(backLobbyProperties, backLobbyProperties.size, (255, 255, 255),
                                                "Back to Lobby")
-        if currentMenu != "Game Over":
 
-            # Gradient background in basic menus
-            if counter % 15 == 0:
-                startMenuProperties.dynamicColors(0)
-                startMenuProperties.refreshScreenColors()
-                counter = 1
-            else:
-                counter += 1
+    if currentMenu != "Game Over" and currentMenu != "Game":
+        # Dynamic lighting for basic menus
+        if currentMenu != "Game Over" and currentMenu != "Game":
+            startMenuProperties.dynamicColors(0)
+            startMenuProperties.refreshScreenColors()
+            gameScreen.fill(startMenuProperties.screenColor)
 
-            if currentMenu == "Main Menu":
-                # Clear every frame
-                gameScreen.fill(startMenuProperties.screenColor)
+        # Gradient background in basic menus
+        if counter % 15 == 0:
+            startMenuProperties.dynamicColors(0)
+            startMenuProperties.refreshScreenColors()
+            counter = 1
+        else:
+            counter += 1
 
-                # Bounce Game title
-                gameScreen.blit(textBounceGame, textBounceGame_rect)
-                gameScreen.blit(textStartGame, textStartGame_rect)
-                gameScreen.blit(textOptions, textOptions_rect)
-                gameScreen.blit(textCredits, textCredits_rect)
-                gameScreen.blit(textQuit, textQuit_rect)
-            # OPTIONS
-            elif currentMenu == "Options":
-                gameScreen.fill(startMenuProperties.screenColor)
-                # Skins title
-                gameScreen.blit(textBackOptions, textBackOptions_rect)
-                # Circle select option
-                pygame.draw.circle(
-                    gameScreen,
-                    (255, 255, 255),
-                    (startMenuProperties.width / 3, startMenuProperties.height / 8 * 1.5),
-                    startMenuProperties.width / 20)
-                gameScreen.blit(textSelectOptions, textSelectOptions_rect)
+        if currentMenu == "Main Menu":
+            # Clear every frame
+            gameScreen.fill(startMenuProperties.screenColor)
 
-                # Triangle select option
-                pygame.draw.polygon(
-                    gameScreen,
-                    (255, 255, 255),
-                    [(startMenuProperties.width / 3 * 2, startMenuProperties.height / 8 * 2),
-                     (startMenuProperties.width / 3 * 2 - startMenuProperties.width / 20,
-                      startMenuProperties.height / 8 * 1.5 - startMenuProperties.width / 20),
-                     (startMenuProperties.width / 3 * 2 + startMenuProperties.width / 20,
-                      startMenuProperties.height / 8 * 1.5 - startMenuProperties.width / 20)]
-                )
-                gameScreen.blit(textSelectOptions_2, textSelectOptions_2_rect)
+            # Bounce Game title
+            gameScreen.blit(textBounceGame, textBounceGame_rect)
+            gameScreen.blit(textStartGame, textStartGame_rect)
+            gameScreen.blit(textOptions, textOptions_rect)
+            gameScreen.blit(textCredits, textCredits_rect)
+            gameScreen.blit(textQuit, textQuit_rect)
+        # OPTIONS
+        elif currentMenu == "Options":
+            gameScreen.fill(startMenuProperties.screenColor)
+            # Skins title
+            gameScreen.blit(textBackOptions, textBackOptions_rect)
+            # Circle select option
+            pygame.draw.circle(
+                gameScreen,
+                (255, 255, 255),
+                (startMenuProperties.width / 3, startMenuProperties.height / 8 * 1.5),
+                startMenuProperties.width / 20)
+            gameScreen.blit(textSelectOptions, textSelectOptions_rect)
 
-                # Square select option
-                pygame.draw.rect(
-                    gameScreen,
-                    entityProperties.entityColor,
-                    [startMenuProperties.width / 5 - startMenuProperties.width / 20,
-                     startMenuProperties.height / 8 * 4.5 - startMenuProperties.width / 20,
-                     startMenuProperties.width / 20 * 2,
-                     startMenuProperties.width / 20 * 2
-                     ]
-                )
-                gameScreen.blit(textSelectOptions_3, textSelectOptions_3_rect)
+            # Triangle select option
+            pygame.draw.polygon(
+                gameScreen,
+                (255, 255, 255),
+                [(startMenuProperties.width / 3 * 2, startMenuProperties.height / 8 * 2),
+                 (startMenuProperties.width / 3 * 2 - startMenuProperties.width / 20,
+                  startMenuProperties.height / 8 * 1.5 - startMenuProperties.width / 20),
+                 (startMenuProperties.width / 3 * 2 + startMenuProperties.width / 20,
+                  startMenuProperties.height / 8 * 1.5 - startMenuProperties.width / 20)]
+            )
+            gameScreen.blit(textSelectOptions_2, textSelectOptions_2_rect)
 
-                # Ruby select option
-                pygame.draw.polygon(
-                    gameScreen,
-                    entityProperties.entityColor,
-                    [(startMenuProperties.width / 5 * 2.5,
-                      startMenuProperties.height / 8 * 4.5 + startMenuProperties.width / 20),
-                     (startMenuProperties.width / 5 * 2.5 - startMenuProperties.width / 20,
-                      startMenuProperties.height / 8 * 4.5),
-                     (startMenuProperties.width / 5 * 2.5,
-                      startMenuProperties.height / 8 * 4.5 - startMenuProperties.width / 20),
-                     (startMenuProperties.width / 5 * 2.5 + startMenuProperties.width / 20,
-                      startMenuProperties.height / 8 * 4.5)],
-                )
-                gameScreen.blit(textSelectOptions_4, textSelectOptions_4_rect)
+            # Square select option
+            pygame.draw.rect(
+                gameScreen,
+                entityProperties.entityColor,
+                [startMenuProperties.width / 5 - startMenuProperties.width / 20,
+                 startMenuProperties.height / 8 * 4.5 - startMenuProperties.width / 20,
+                 startMenuProperties.width / 20 * 2,
+                 startMenuProperties.width / 20 * 2
+                 ]
+            )
+            gameScreen.blit(textSelectOptions_3, textSelectOptions_3_rect)
 
-                # Hexagon select option
-                pygame.draw.polygon(
-                    gameScreen,
-                    entityProperties.entityColor,
-                    [(startMenuProperties.width / 5 * 4 - startMenuProperties.width / 20 / 2,
-                      startMenuProperties.height / 8 * 4.5 + startMenuProperties.width / 20 / 1.15),
-                     (startMenuProperties.width / 5 * 4 + startMenuProperties.width / 20 / 2,
-                      startMenuProperties.height / 8 * 4.5 + startMenuProperties.width / 20 / 1.15),
-                     (startMenuProperties.width / 5 * 4 + startMenuProperties.width / 20,
-                      startMenuProperties.height / 8 * 4.5),
-                     (startMenuProperties.width / 5 * 4 + startMenuProperties.width / 20 / 2,
-                      startMenuProperties.height / 8 * 4.5 - startMenuProperties.width / 20 / 1.15),
-                     (startMenuProperties.width / 5 * 4 - startMenuProperties.width / 20 / 2,
-                      startMenuProperties.height / 8 * 4.5 - startMenuProperties.width / 20 / 1.15),
-                     (startMenuProperties.width / 5 * 4 - startMenuProperties.width / 20,
-                      startMenuProperties.height / 8 * 4.5),
-                     ]
-                )
-                gameScreen.blit(textSelectOptions_5, textSelectOptions_5_rect)
+            # Ruby select option
+            pygame.draw.polygon(
+                gameScreen,
+                entityProperties.entityColor,
+                [(startMenuProperties.width / 5 * 2.5,
+                  startMenuProperties.height / 8 * 4.5 + startMenuProperties.width / 20),
+                 (startMenuProperties.width / 5 * 2.5 - startMenuProperties.width / 20,
+                  startMenuProperties.height / 8 * 4.5),
+                 (startMenuProperties.width / 5 * 2.5,
+                  startMenuProperties.height / 8 * 4.5 - startMenuProperties.width / 20),
+                 (startMenuProperties.width / 5 * 2.5 + startMenuProperties.width / 20,
+                  startMenuProperties.height / 8 * 4.5)],
+            )
+            gameScreen.blit(textSelectOptions_4, textSelectOptions_4_rect)
 
-            # CREDITS
-            elif currentMenu == "Credits":
-                startScreen.fill(startMenuProperties.screenColor)
-                # Author title
-                startScreen.blit(textAuthor, textAuthor_rect)
-                startScreen.blit(textAuthorMe, textAuthorMe_rect)
-                startScreen.blit(textGitHub, textGitHub_rect)
-                startScreen.blit(textMyGitHub, textMyGitHub_rect)
-                startScreen.blit(textBackCredits, textBackCredits_rect)
+            # Hexagon select option
+            pygame.draw.polygon(
+                gameScreen,
+                entityProperties.entityColor,
+                [(startMenuProperties.width / 5 * 4 - startMenuProperties.width / 20 / 2,
+                  startMenuProperties.height / 8 * 4.5 + startMenuProperties.width / 20 / 1.15),
+                 (startMenuProperties.width / 5 * 4 + startMenuProperties.width / 20 / 2,
+                  startMenuProperties.height / 8 * 4.5 + startMenuProperties.width / 20 / 1.15),
+                 (startMenuProperties.width / 5 * 4 + startMenuProperties.width / 20,
+                  startMenuProperties.height / 8 * 4.5),
+                 (startMenuProperties.width / 5 * 4 + startMenuProperties.width / 20 / 2,
+                  startMenuProperties.height / 8 * 4.5 - startMenuProperties.width / 20 / 1.15),
+                 (startMenuProperties.width / 5 * 4 - startMenuProperties.width / 20 / 2,
+                  startMenuProperties.height / 8 * 4.5 - startMenuProperties.width / 20 / 1.15),
+                 (startMenuProperties.width / 5 * 4 - startMenuProperties.width / 20,
+                  startMenuProperties.height / 8 * 4.5),
+                 ]
+            )
+            gameScreen.blit(textSelectOptions_5, textSelectOptions_5_rect)
+
+        # CREDITS
+        elif currentMenu == "Credits":
+            startScreen.fill(startMenuProperties.screenColor)
+            # Author title
+            startScreen.blit(textAuthor, textAuthor_rect)
+            startScreen.blit(textAuthorMe, textAuthorMe_rect)
+            startScreen.blit(textGitHub, textGitHub_rect)
+            startScreen.blit(textMyGitHub, textMyGitHub_rect)
+            startScreen.blit(textBackCredits, textBackCredits_rect)
 
     # PLAYER IN GAME
     if currentMenu == "Game":
@@ -599,94 +610,96 @@ while True:
         # Gravity
         if entityProperties.positionY + entityProperties.size < gameMenuProperties.height:
             entityProperties.setPositionY(entityProperties.positionY + entityProperties.gravitySpeed)
-            entityProperties.setGravity(entityProperties.gravitySpeed + 0.0015)
+            entityProperties.setGravity(entityProperties.gravitySpeed + entityProperties.defaultGravity / 7)
 
         # Bouncing
         # If ball don't touch bottom continue
-        if entityProperties.positionY < gameMenuProperties.height - entityProperties.size:
-            # If ball touch top place it under and set default gravity
-            if not entityProperties.positionY - entityProperties.size > 0:
-                entityProperties.setPositionY(1 + entityProperties.size)
-                entityProperties.setGravity(0.05)
-            # If ball don't touch top continue
-            else:
-                if entityProperties.bounceRight:
-                    # If ball touch right side change bounce direction
-                    if entityProperties.positionX + entityProperties.size >= gameMenuProperties.width:
-                        entityProperties.setBounce(False)
-                        score += 1
-                        # Refresh title
-                        textScore = createText(scoreProperties, scoreProperties.size, scoreProperties.textColor,
-                                               str(score))
-                        # Change screen color after bounce
-                        if score % 3 == 0 and score != 0:
-                            changeScreenColor = 100
-                        # Change position of left spike
-                        spikePropertiesL.refreshPositionY()
-                    # Move ball it to right
-                    entityProperties.setPositionX(entityProperties.positionX + entityProperties.speed)
+        if entityProperties.positionY < gameMenuProperties.height - entityProperties.size - entityProperties.gravitySpeed:
+            if entityProperties.alive:
+                # If ball touch top place it under and set default gravity
+                if not entityProperties.positionY - entityProperties.size > 0:
+                    entityProperties.setPositionY(1 + entityProperties.size)
+                    entityProperties.setGravity(entityProperties.defaultGravity / 4)
+                # If ball don't touch top continue
                 else:
-                    # If ball touch left side change bounce direction
-                    if entityProperties.positionX <= 0 + entityProperties.size:
-                        entityProperties.setBounce(True)
-                        score += 1
-                        textScore = createText(scoreProperties, scoreProperties.size, scoreProperties.textColor,
-                                               str(score))
-                        # Change screen color after bounce
-                        if score % 3 == 0 and score != 0:
-                            changeScreenColor = 100
-                        # Change position of right spike
-                        spikePropertiesR.refreshPositionY()
-                    # Move ball it to left
-                    entityProperties.setPositionX(entityProperties.positionX - entityProperties.speed)
-
-        else:
-            # Smoothly change size of entity to 0 if it died
-            if entityProperties.size > 0:
-                entityProperties.setSize(entityProperties.size - 0.2)
-                entityProperties.setSpeed(0)
-                if entityProperties.alive:
-                    entityProperties.setGravity(entityProperties.defaultJumpHeight / 3 * 2)
-                entityProperties.setAlive(False)
+                    if entityProperties.bounceRight:
+                        # If ball touch right side change bounce direction
+                        if entityProperties.positionX + entityProperties.size >= gameMenuProperties.width:
+                            entityProperties.setBounce(False)
+                            score += 1
+                            # Refresh title
+                            textScore = createText(scoreProperties, scoreProperties.size, scoreProperties.textColor,
+                                                   str(score))
+                            # Change screen color after bounce
+                            if score % 4 == 0 and score != 0:
+                                changeScreenColor = 100
+                            # Change position of left spike
+                            spikePropertiesL.refreshPositionY()
+                        # Move ball it to right
+                        entityProperties.setPositionX(entityProperties.positionX + entityProperties.speed)
+                    else:
+                        # If ball touch left side change bounce direction
+                        if entityProperties.positionX <= 0 + entityProperties.size:
+                            entityProperties.setBounce(True)
+                            score += 1
+                            textScore = createText(scoreProperties, scoreProperties.size, scoreProperties.textColor,
+                                                   str(score))
+                            # Change screen color after bounce
+                            if score % 4 == 0 and score != 0:
+                                changeScreenColor = 100
+                            # Change position of right spike
+                            spikePropertiesR.refreshPositionY()
+                        # Move ball it to left
+                        entityProperties.setPositionX(entityProperties.positionX - entityProperties.speed)
+            # If player is dead decrease ball size
             else:
-                currentMenu = "Game Over"
+                entityProperties.setSize(entityProperties.size - entityProperties.size / 20)
+        else:
+            # Jump on touch bottom animation
+            if entityProperties.alive:
+                entityProperties.setGravity(entityProperties.defaultJumpHeight)
+                entityProperties.setSpeed(0)
+                entityProperties.setAlive(False)
+            # Smoothly change size of entity to 0 if it died
+            elif not entityProperties.alive:
+                if entityProperties.size > 5:
+                    entityProperties.setSize(entityProperties.size - entityProperties.size / 20)
+                else:
+                    currentMenu = "Game Over"
 
-        # Changing color of the screen after player hit 3, 6, 9 points
+        # Changing color of the screen after player hit 4, 8, 12 points
         if changeScreenColor > 0:
-            gameMenuProperties.dynamicColors(0)
-            gameMenuProperties.refreshScreenColors()
+            for i in range(4):
+                gameMenuProperties.dynamicColors(0)
+                gameMenuProperties.refreshScreenColors()
 
-            scoreProperties.dynamicColors(30)
-            scoreProperties.refreshColor()
-            # Refresh score title
-            textScore = createText(scoreProperties, scoreProperties.size, scoreProperties.textColor,
-                                   str(score))
-            changeScreenColor -= 1
+                scoreProperties.dynamicColors(30)
+                scoreProperties.refreshColor()
+                # Refresh score title
+                textScore = createText(scoreProperties, scoreProperties.size, scoreProperties.textColor,
+                                       str(score))
+                changeScreenColor -= 1
 
         # TODO Create more spikes with each level on the screen
-        spikeRight = []
-        for i in range(1):
-            spikeRight.append(spikePropertiesR.createSpike(gameScreen))
-        spikeLeft = []
-        for i in range(1):
-            spikeLeft.append(spikePropertiesL.createSpike(gameScreen))
+        spikesRight = [spikePropertiesR.createSpike(gameScreen)]
+        spikesLeft = [spikePropertiesL.createSpike(gameScreen)]
 
         # Spikes visible Collision with spike
         # TODO add more spikes
-        for i in range(len(spikeRight)):
-            if entity.colliderect(spikeRight[i]):
+        for i in range(len(spikesRight)):
+            if entity.colliderect(spikesRight[i - 1]):
                 # If player touch spike he don t have any option to move
                 entityProperties.setSpeed(0)
                 if entityProperties.alive:
-                    entityProperties.setGravity(entityProperties.defaultJumpHeight / 3 * 2)
+                    entityProperties.setGravity(entityProperties.defaultJumpHeight)
                 entityProperties.setAlive(False)
 
-        for i in range(len(spikeLeft)):
-            if entity.colliderect(spikeLeft[i]):
+        for i in range(len(spikesLeft)):
+            if entity.colliderect(spikesLeft[i - 1]):
                 # If player touch spike he don t have any option to move
                 entityProperties.setSpeed(0)
                 if entityProperties.alive:
-                    entityProperties.setGravity(entityProperties.defaultJumpHeight / 3 * 2)
+                    entityProperties.setGravity(entityProperties.defaultJumpHeight)
                 entityProperties.setAlive(False)
 
     # GAME OVER
@@ -707,3 +720,6 @@ while True:
         gameScreen.blit(textScore, textScore_rect)
 
     pygame.display.flip()
+
+    # Limit fps
+    clock.tick(60)

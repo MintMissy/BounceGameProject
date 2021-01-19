@@ -4,9 +4,9 @@ import Menus.MenuProperties as MenuProperties
 class StartMenuProperties(MenuProperties.MenuProperties):
     gameStart = False
 
-    colorR = 55
-    colorG = 55
-    colorB = 66
+    colorR = 45
+    colorG = 237
+    colorB = 53
     screenColor = (colorR, colorG, colorB)
 
     buttonColorR = 255
