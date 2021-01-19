@@ -252,6 +252,7 @@ while True:
                     # Check if player clicked Start Game button Start if it do start game
                     if event.type == pygame.MOUSEBUTTONUP:
                         currentMenu = "Game"
+                        resetGame()
                 # If player didn't hover Start Game change it color to normal
                 else:
                     textStartGame = createText(startGameProperties, startGameProperties.size, (255, 255, 255), "Start")
