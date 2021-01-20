@@ -15,7 +15,7 @@ class LeftSpike:
     height = screenProperties.height / 15
 
     positionX = 0
-    positionY = random.randrange(0, 15) * (screenProperties.height / 15)
+    positionY = -100
 
     def refreshPositionY(self):
         self.positionY = random.randrange(0, 15) * (screenProperties.height / 15)
@@ -31,6 +31,9 @@ class LeftSpike:
 
     def setPositionX(self, newPositionX):
         self.positionX = newPositionX
+
+    def setPositionY(self, newPositionY):
+        self.positionY = newPositionY
 
     def createSpike(self, screen):
         return pygame.draw.polygon(

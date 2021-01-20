@@ -8,10 +8,10 @@ class EntityVector:
     colorB = 230
     entityColor = (colorR, colorG, colorB)
 
-    defaultSize = screenProperties.height / 18
-    size = screenProperties.height / 18
-    speed = screenProperties.width / 110
-    defaultSpeed = screenProperties.width / 110
+    defaultSize = screenProperties.height / 25
+    size = screenProperties.height / 25
+    speed = screenProperties.width / 140
+    defaultSpeed = screenProperties.width / 140
     gravitySpeed = screenProperties.height / 230
     defaultGravity = screenProperties.height / 230
     defaultJumpHeight = -screenProperties.height / 65

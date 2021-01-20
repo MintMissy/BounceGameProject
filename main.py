@@ -1,5 +1,6 @@
 import pygame
 
+import random
 import TextProperties
 import EntitiesProperties
 from Menus import GameMenuProperties
@@ -21,11 +22,21 @@ gameMenuProperties = GameMenuProperties.GameMenuProperties()
 gameScreen = pygame.display.set_mode((gameMenuProperties.width, gameMenuProperties.height))
 # Variable that checks if player lost
 gameOver = False
-# Create instance of left spikes properties
-spikePropertiesL = SpikesProperties.LeftSpike()
-spikePropertiesL.refreshPositionY()
-# Create instance of right spikes properties
-spikePropertiesR = SpikesProperties.RightSpike()
+
+# Create instances of left spikes properties
+leftSpikesProperties = []
+# Add 16 spikes to list
+for i in range(16):
+    leftSpikesProperties.append(SpikesProperties.LeftSpike())
+    leftSpikesProperties[i - 1].setPositionY((i - 1) * (gameMenuProperties.height / 15))
+
+# Create instances of right spikes properties
+rightSpikesProperties = []
+# Add 16 spikes to list
+for i in range(16):
+    rightSpikesProperties.append(SpikesProperties.RightSpike())
+    rightSpikesProperties[i - 1].setPositionY((i - 1) * (gameMenuProperties.height / 15))
+
 # Create entity at the middle of the screen
 entityProperties = EntitiesProperties.EntityVector()
 
@@ -196,15 +207,17 @@ mousePosition = (-100, -100)
 spikesRight = []
 spikesLeft = []
 
+blankSpaceRight = [6]
+blankSpaceLeft = [random.randrange(0, 11)]
+
 
 def resetGame():
-    global score, gameOver, spikePropertiesL, spikePropertiesR, entityProperties, textScore
+    global score, gameOver, blankSpaceLeft, blankSpaceRight, entityProperties, textScore
     score = 0
     gameOver = False
-    # Reset spikes position
-    spikePropertiesL = SpikesProperties.LeftSpike()
-    spikePropertiesL.refreshPositionY()
-    spikePropertiesR = SpikesProperties.RightSpike()
+    # Reset spikes
+    blankSpaceRight = [3]
+    blankSpaceLeft = [random.randrange(0, 11)]
     # Reset entity position
     entityProperties = EntitiesProperties.EntityVector()
     entityProperties.setPositionY(gameMenuProperties.height / 2)
@@ -640,8 +653,9 @@ while True:
                             # Change screen color after bounce
                             if score % 4 == 0 and score != 0:
                                 changeScreenColor = 100
-                            # Change position of left spike
-                            spikePropertiesL.refreshPositionY()
+                            # Change blank space in left side
+                            blankSpaceLeft = [random.randrange(0, 11)]
+
                         # Move ball it to right
                         entityProperties.setPositionX(entityProperties.positionX + entityProperties.speed)
                     else:
@@ -654,8 +668,8 @@ while True:
                             # Change screen color after bounce
                             if score % 4 == 0 and score != 0:
                                 changeScreenColor = 100
-                            # Change position of right spike
-                            spikePropertiesR.refreshPositionY()
+                            # Change blank space in left side
+                            blankSpaceRight = [random.randrange(0, 11)]
                         # Move ball it to left
                         entityProperties.setPositionX(entityProperties.positionX - entityProperties.speed)
             # If player is dead decrease ball size
@@ -687,12 +701,24 @@ while True:
                                        str(score))
                 changeScreenColor -= 1
 
-        # TODO Create more spikes with each level on the screen
-        spikesRight = [spikePropertiesR.createSpike(gameScreen)]
-        spikesLeft = [spikePropertiesL.createSpike(gameScreen)]
+        # TODO add adjustable space between spikes
+        # Create left spikes on the screen
+        spikesLeft = []
+        for i in range(len(leftSpikesProperties)):
+            # If place shouldn have spike draw spike
+            if (not i == blankSpaceLeft[0]) and (not i == blankSpaceLeft[0] + 1) and (
+                    not i == blankSpaceLeft[0] + 2) and (not i == blankSpaceLeft[0] + 3):
+                spikesLeft.append(leftSpikesProperties[i - 1].createSpike(gameScreen))
+
+        # Create right spikes on the screen
+        spikesRight = []
+        for i in range(len(rightSpikesProperties)):
+            # If place shouldn have spike draw spike
+            if (not i == blankSpaceRight[0]) and (not i == blankSpaceRight[0] + 1) and (
+                    not i == blankSpaceRight[0] + 2) and (not i == blankSpaceRight[0] + 3):
+                spikesRight.append(rightSpikesProperties[i - 1].createSpike(gameScreen))
 
         # Spikes visible Collision with spike
-        # TODO add more spikes
         for i in range(len(spikesRight)):
             if entity.colliderect(spikesRight[i - 1]):
                 # If player touch spike he don t have any option to move
