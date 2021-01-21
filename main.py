@@ -204,20 +204,31 @@ counter = 1
 # Declare mouse position to make it global
 mousePosition = (-100, -100)
 
+# Array that contains right spikes
 spikesRight = []
+# Array that contains left spikes
 spikesLeft = []
 
-blankSpaceRight = [6]
-blankSpaceLeft = [random.randrange(0, 11)]
+# Array that contains right blank space size between spikes
+blankSpaceSizeRight = 9
+# Array that contains first spike that should be blank (right side)
+blankSpaceRight = [1, 15 - blankSpaceSizeRight]
+
+# Array that contains left blank space size between spikes
+blankSpaceSizeLeft = 9
+# Array that contains first spike that should be blank (left side)
+blankSpaceLeft = [random.randrange(1, 15 - blankSpaceSizeLeft)]
 
 
 def resetGame():
-    global score, gameOver, blankSpaceLeft, blankSpaceRight, entityProperties, textScore
+    global score, gameOver, blankSpaceLeft, blankSpaceSizeLeft, blankSpaceRight, blankSpaceSizeRight, entityProperties, textScore
     score = 0
     gameOver = False
     # Reset spikes
-    blankSpaceRight = [3]
-    blankSpaceLeft = [random.randrange(0, 11)]
+    blankSpaceSizeRight = 9
+    blankSpaceRight = [random.randrange(1, 15 - blankSpaceSizeRight)]
+    blankSpaceSizeLeft = 9
+    blankSpaceLeft = [random.randrange(1, 15 - blankSpaceSizeLeft)]
     # Reset entity position
     entityProperties = EntitiesProperties.EntityVector()
     entityProperties.setPositionY(gameMenuProperties.height / 2)
@@ -563,8 +574,9 @@ while True:
 
         # SHOW SCORE AT SCREEN
         if currentMenu == "Game":
-            # If score is 10/100/1000 center it
-            if score == 10 or 100 or 1000:
+
+            # center score title in game
+            if score % 10 == 0 or score == 1 or score == 2:
                 textScore_rect = textScore.get_rect(
                     center=(
                         gameMenuProperties.getCenterX(),
@@ -646,6 +658,14 @@ while True:
                         # If ball touch right side change bounce direction
                         if entityProperties.positionX + entityProperties.size >= gameMenuProperties.width:
                             entityProperties.setBounce(False)
+
+                            # Check if game should change size of blank space
+                            if blankSpaceSizeLeft > 3 and score >= 4 and score % 4 == 0:
+                                blankSpaceSizeLeft -= 1
+                            # Change blank space in left side
+                            blankSpaceLeft = [random.randrange(1, 15 - blankSpaceSizeLeft)]
+
+                            # Add point to score
                             score += 1
                             # Refresh title
                             textScore = createText(scoreProperties, scoreProperties.size, scoreProperties.textColor,
@@ -653,8 +673,6 @@ while True:
                             # Change screen color after bounce
                             if score % 4 == 0 and score != 0:
                                 changeScreenColor = 100
-                            # Change blank space in left side
-                            blankSpaceLeft = [random.randrange(0, 11)]
 
                         # Move ball it to right
                         entityProperties.setPositionX(entityProperties.positionX + entityProperties.speed)
@@ -662,14 +680,21 @@ while True:
                         # If ball touch left side change bounce direction
                         if entityProperties.positionX <= 0 + entityProperties.size:
                             entityProperties.setBounce(True)
+
+                            # Check if game should change size of blank space
+                            if blankSpaceSizeRight > 3 and score >= 4 and score % 4 == 1:
+                                blankSpaceSizeRight -= 1
+                            # Change blank space in left side
+                            blankSpaceRight = [random.randrange(1, 15 - blankSpaceSizeRight)]
+
+                            # Add point to score
                             score += 1
                             textScore = createText(scoreProperties, scoreProperties.size, scoreProperties.textColor,
                                                    str(score))
                             # Change screen color after bounce
                             if score % 4 == 0 and score != 0:
                                 changeScreenColor = 100
-                            # Change blank space in left side
-                            blankSpaceRight = [random.randrange(0, 11)]
+
                         # Move ball it to left
                         entityProperties.setPositionX(entityProperties.positionX - entityProperties.speed)
             # If player is dead decrease ball size
@@ -701,21 +726,19 @@ while True:
                                        str(score))
                 changeScreenColor -= 1
 
-        # TODO add adjustable space between spikes
         # Create left spikes on the screen
         spikesLeft = []
         for i in range(len(leftSpikesProperties)):
-            # If place shouldn have spike draw spike
-            if (not i == blankSpaceLeft[0]) and (not i == blankSpaceLeft[0] + 1) and (
-                    not i == blankSpaceLeft[0] + 2) and (not i == blankSpaceLeft[0] + 3):
+            # If place should have spike add it to spike list
+            if not blankSpaceLeft[0] < i <= (blankSpaceLeft[0] + blankSpaceSizeLeft):
                 spikesLeft.append(leftSpikesProperties[i - 1].createSpike(gameScreen))
+
 
         # Create right spikes on the screen
         spikesRight = []
         for i in range(len(rightSpikesProperties)):
-            # If place shouldn have spike draw spike
-            if (not i == blankSpaceRight[0]) and (not i == blankSpaceRight[0] + 1) and (
-                    not i == blankSpaceRight[0] + 2) and (not i == blankSpaceRight[0] + 3):
+            # If place should have spike add it to spike list
+            if not blankSpaceRight[0] < i <= (blankSpaceRight[0] + blankSpaceSizeRight):
                 spikesRight.append(rightSpikesProperties[i - 1].createSpike(gameScreen))
 
         # Spikes visible Collision with spike
