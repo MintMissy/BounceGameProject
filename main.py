@@ -157,7 +157,7 @@ textBackCredits_rect = textBackCredits.get_rect(
 score = 0
 # Create new text that show score in the game
 scoreProperties = TextProperties.Text()
-textScore = createText(scoreProperties, scoreProperties.size, (15, 207, 23), str(score))
+textScore = createText(scoreProperties, int(gameMenuProperties.width / 7), (15, 207, 23), str(score))
 textScore_rect = textScore.get_rect(
     center=(gameMenuProperties.getCenterX(), gameMenuProperties.getCenterY() - gameMenuProperties.width / 7))
 
@@ -229,7 +229,7 @@ def resetGame():
     scoreProperties.setColorType(1)
     scoreProperties.setColors(15, 207, 23)
     scoreProperties.refreshColor()
-    textScore = createText(scoreProperties, 100, scoreProperties.textColor, str(score))
+    textScore = createText(scoreProperties, int(gameMenuProperties.width / 7), scoreProperties.textColor, str(score))
     # Reset background color
     gameMenuProperties.setColorType(1)
     gameMenuProperties.setColors(45, 237, 53)
@@ -634,7 +634,7 @@ while True:
 
         # Bouncing
         # If ball don't touch bottom continue
-        if entityProperties.positionY < gameMenuProperties.height - entityProperties.size - entityProperties.gravitySpeed:
+        if entityProperties.positionY < gameMenuProperties.height - entityProperties.size * 1.45:
             if entityProperties.alive:
                 # If ball touch top place it under and set default gravity
                 if not entityProperties.positionY - entityProperties.size > 0:
